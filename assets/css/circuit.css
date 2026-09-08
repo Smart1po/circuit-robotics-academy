@@ -1460,6 +1460,19 @@ html[data-theme="light"] ::-webkit-scrollbar-track {
 .mark__wing {
   display: block;
   transform-origin: 50% 60%;
+  flex: 0 0 auto;
+}
+
+/* The mark is the biggest thing in the header, so the header makes room for
+   it rather than the other way round. */
+.hud__in { min-height: 66px; }
+
+@media (max-width: 560px) {
+  /* At phone width the wing keeps its grid but drops a pixel size, so the
+     header does not eat a third of the screen. */
+  .mark__wing canvas { width: 56px !important; height: 28px !important; }
+  .hud__in { min-height: 52px; }
+  .hud__mark { font-size: 17px; letter-spacing: 0.2em; }
 }
 
 .mark__wing.is-flexing { animation: flex-wing 420ms steps(4) 1; }

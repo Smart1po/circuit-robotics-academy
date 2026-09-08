@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CIRCUIT — Robotics &amp; AI Academy, Kuwait City</title>
+<meta name="description" content="CIRCUIT is a robotics and AI academy in Kuwait City for ages 8 to 17. Twelve-week terms, one robot per team, and a scored run at the end of every term.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#07060E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/circuit.css">
+
+<!-- Sets the theme before the first paint, so the page never flashes
+     the wrong one on the way in. -->
+<script src="assets/js/theme.js"></script>
+</head>
+<body data-page="home">
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="glass" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="wrap hud__in">
+    <a class="hud__mark" href="index.html">CIRCUIT</a>
+    <span class="hud__stage">Stage 1-1 · Home</span>
+    <nav class="hud__nav" aria-label="Main">
+      <a class="chip" href="index.html" aria-current="page">Home</a>
+      <a class="chip" href="members.html">Members</a>
+      <a class="chip" href="login.html">Log in</a>
+    </nav>
+  </div>
+</header>
+
+
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <section class="wrap hero">
+    <p class="t-eyebrow">Robotics &amp; AI Academy · Kuwait City · Ages 8–17</p>
+
+    <h1 class="px px--head hero__head"
+        data-px="KIDS WHO BUILD|ROBOTS THAT|FINISH THE RUN"
+        data-px-max="8">Kids who build robots that finish the run</h1>
+
+    <p class="t-lead">
+      CIRCUIT is a robotics and AI academy in Kuwait City for ages 8 to 17:
+      twelve-week terms, one robot per team, and a scored run at the end of
+      every term.
+    </p>
+
+    <div class="hero__actions">
+      <a class="btn" href="login.html">Log in</a>
+      <a href="#term">See how a term runs</a>
+    </div>
+
+    <p class="t-cap" style="margin-top:16px">
+      Members only · timetable, kits and the competition rubric
+    </p>
+
+    <div class="rail" data-rail aria-hidden="true">
+      <div class="rail__car"><span class="sprite" data-sprite="bolt" data-scale="3"></span></div>
+    </div>
+
+    <div class="strip">
+      <div class="strip__cell"><b class="strip__n">12</b><span class="t-cap">Weeks per term</span></div>
+      <div class="strip__cell"><b class="strip__n">3</b><span class="t-cap">Age bands</span></div>
+      <div class="strip__cell"><b class="strip__n">1</b><span class="t-cap">Robot per team</span></div>
+      <div class="strip__cell"><b class="strip__n">1</b><span class="t-cap">Scored run</span></div>
+    </div>
+  </section>
+
+  <!-- ================= WHAT WE TEACH ================= -->
+  <section class="wrap section" id="teach">
+    <h2 class="px px--head" data-px="WHAT WE TEACH" data-px-max="5">What we teach</h2>
+
+    <p class="t-lead" style="margin-top:24px">
+      Four units run across every term. The same four for every age band — the
+      depth changes, not the subject.
+    </p>
+
+    <div class="grid grid--2" style="margin-top:32px">
+
+      <article class="frame card">
+        <span class="card__sprite sprite" data-sprite="arm" data-scale="2"></span>
+        <p class="card__no">Unit 01</p>
+        <h3 class="card__title">Build &amp; Drive</h3>
+        <p class="t-body">
+          Gear ratios, torque, and why a fast robot loses to a straight one.
+          Students build a drivetrain, measure how far it actually travels per
+          motor rotation, and rebuild it when the numbers disagree with the
+          tape measure.
+        </p>
+        <p class="card__out">You leave with: <b>a chassis that drives three metres straight</b>, and a written record of how far off it was the first time.</p>
+      </article>
+
+      <article class="frame card">
+        <span class="card__sprite sprite" data-sprite="tip" data-scale="2"></span>
+        <p class="card__no">Unit 02</p>
+        <h3 class="card__title">Circuits &amp; Soldering</h3>
+        <p class="t-body">
+          Ohm's law on paper, then on a breadboard, then on a board they solder
+          themselves. Multimeter first, iron second. Every student wires a
+          working sensor board and can explain what each leg of it does before
+          it gets power.
+        </p>
+        <p class="card__out">You leave with: <b>a soldered sensor board you tested yourself</b>.</p>
+        <p class="safety">
+          <b>Safety.</b> Soldering happens at Bench B with fume extraction
+          running and safety glasses on. SPARK students do the wiring; a coach
+          holds the iron.
+        </p>
+      </article>
+
+      <article class="frame card">
+        <span class="card__sprite sprite" data-sprite="scan" data-scale="2"></span>
+        <p class="card__no">Unit 03</p>
+        <h3 class="card__title">Sensors, Code &amp; Vision</h3>
+        <p class="t-body">
+          Reflectance sensors, ultrasonic distance and a gyro, and the code that
+          makes them useful: line following with a proportional controller
+          instead of a stack of if-statements, and a state machine for a mission
+          run. APEX groups add a camera — colour thresholding first, then a
+          small classifier running on the robot itself.
+        </p>
+        <p class="card__out">You leave with: <b>a robot that follows a line without wobbling</b>, and code you can explain line by line.</p>
+      </article>
+
+      <article class="frame card">
+        <span class="card__sprite sprite" data-sprite="kite" data-scale="2"></span>
+        <p class="card__no">Unit 04</p>
+        <h3 class="card__title">Drone Systems</h3>
+        <p class="t-body">
+          Flight controller basics, prop pitch, centre of gravity, and a
+          pre-flight check that gets done every single time. Flights happen in a
+          netted indoor bay at low altitude.
+        </p>
+        <p class="card__out">You leave with: <b>a completed pre-flight checklist</b> and a supervised hover you flew yourself.</p>
+        <p class="safety">
+          <b>Safety.</b> No student flies outdoors on our programme. Prop guards
+          stay on. The bay net stays closed while a motor is armed.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================= HOW A TERM RUNS ================= -->
+  <section class="wrap section" id="term">
+    <h2 class="px px--head" data-px="HOW A TERM RUNS" data-px-max="5">How a term runs</h2>
+
+    <p class="t-lead" style="margin-top:24px">
+      Twelve weeks, in four stages. Nothing here is a one-off workshop — the
+      robot a student starts in week one is the robot that runs in week twelve.
+    </p>
+
+    <div class="rail" data-rail aria-hidden="true" style="margin-top:32px">
+      <div class="rail__car"><span class="sprite" data-sprite="bolt" data-scale="3"></span></div>
+    </div>
+
+    <div class="frame">
+      <div class="stage">
+        <p class="stage__tag">Stage 1 · Weeks 1–3 · Build</p>
+        <p class="t-body">
+          Unit 01. The chassis goes together, comes apart, and goes together
+          better. By the end of week three every team has measured their own
+          distance-per-rotation and written it in the logbook.
+        </p>
+      </div>
+      <div class="stage">
+        <p class="stage__tag">Stage 2 · Weeks 4–8 · Control</p>
+        <p class="t-body">
+          Units 02 and 03. Weeks four and five are the sensor board: wired,
+          soldered, tested. Weeks six to eight are the control loop, where a
+          robot stops doing what it was told and starts doing what it measures.
+        </p>
+      </div>
+      <div class="stage">
+        <p class="stage__tag">Stage 3 · Weeks 9–10 · Flight</p>
+        <p class="t-body">
+          Unit 04, in the Flight Bay. Same day, same time, different room. Two
+          weeks on airframes, checks and a supervised hover.
+        </p>
+      </div>
+      <div class="stage">
+        <p class="stage__tag">Stage 4 · Weeks 11–12 · Run</p>
+        <p class="t-body">
+          Week eleven is a full dry run on the mat at competition timing, scored
+          but not recorded. Week twelve is the real thing: two attempts, best one
+          counts, families welcome from thirty minutes before.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHO IT'S FOR ================= -->
+  <section class="wrap section" id="bands">
+    <h2 class="px px--head" data-px="WHO IT'S FOR" data-px-max="5">Who it's for</h2>
+
+    <p class="t-lead" style="margin-top:24px">
+      Three bands, split by age rather than by experience. Nobody needs to
+      arrive knowing how to code.
+    </p>
+
+    <div class="grid grid--3" style="margin-top:32px">
+      <article class="frame">
+        <p class="band__name">SPARK</p>
+        <p class="band__meta">Ages 8–10 · 90 minutes a week</p>
+        <p class="band__fee">45 KD<small>per term</small></p>
+        <p class="t-body" style="margin-top:16px">
+          Screw-together builds, no soldering iron, block coding. Same four
+          units as everyone else, at the depth an eight-year-old can actually
+          hold.
+        </p>
+      </article>
+
+      <article class="frame">
+        <p class="band__name">RELAY</p>
+        <p class="band__meta">Ages 11–13 · 2 hours a week</p>
+        <p class="band__fee">60 KD<small>per term</small></p>
+        <p class="t-body" style="margin-top:16px">
+          First soldering, first text code, first real sensors. Can be invited
+          onto the competition track from week six.
+        </p>
+      </article>
+
+      <article class="frame">
+        <p class="band__name">APEX</p>
+        <p class="band__meta">Ages 14–17 · 2 hours a week</p>
+        <p class="band__fee">75 KD<small>per term</small></p>
+        <p class="t-body" style="margin-top:16px">
+          Full build, the whole control loop written by the student, on-device
+          vision, and the competition track by default.
+        </p>
+      </article>
+    </div>
+
+    <div class="grid grid--2" style="margin-top:24px">
+      <article class="frame band--comp">
+        <p class="band__name">Competition track</p>
+        <p class="band__meta">Add-on · 90 minutes a week</p>
+        <p class="band__fee">25 KD<small>per term</small></p>
+        <p class="t-body" style="margin-top:16px">
+          Wednesday evenings in the Mat Room. APEX, and RELAY students invited
+          by their coach.
+        </p>
+      </article>
+
+      <article class="frame">
+        <p class="band__name">Kit deposit</p>
+        <p class="band__meta">Refunded</p>
+        <p class="band__fee">20 KD<small>returned in full</small></p>
+        <p class="t-body" style="margin-top:16px">
+          Returned when the kit comes back complete at the end of term.
+        </p>
+      </article>
+    </div>
+
+    <div class="frame frame--well" style="margin-top:24px">
+      <p class="t-body">
+        <b>What a term fee includes.</b> The kit for the term, every consumable,
+        the printed logbook, the dry run and the scored run. What it does not
+        include is the replacement cost of a part broken twice — those prices
+        are listed in the members area, so nobody is surprised.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= COMPETITION ================= -->
+  <section class="wrap section" id="competition">
+    <h2 class="px px--mag" data-px="COMPETITION TRACK" data-px-max="5" style="color:var(--magenta)">Competition track</h2>
+
+    <div class="frame frame--mag card" style="margin-top:24px">
+      <span class="card__sprite sprite" data-sprite="claw" data-scale="3"></span>
+
+      <p class="t-lead">A mat, six objectives, one hundred and fifty seconds, two attempts.</p>
+
+      <p class="t-body" style="margin-top:16px">
+        Our competition term uses an international-style autonomous mission
+        format: a 2.4 by 1.2 metre mat, six scored objectives, a single
+        150-second round, and two attempts per team with the better attempt
+        counting. Fully autonomous — once the round starts, nobody touches the
+        robot.
+      </p>
+
+      <p class="t-body" style="margin-top:16px">
+        Teams are two or three students. One person is nominated to place the
+        robot and start the round; everyone else stays behind the line. The full
+        scoring rubric, the penalties and the dry-run dates are in the members
+        area.
+      </p>
+
+      <p class="safety" style="border-left-color:var(--magenta)">
+        <b>Affiliation.</b> We are not affiliated with any competition
+        organiser, and we do not register students for external events. The
+        format is ours, the mat is ours, and our coaches write and score it
+        in-house. If a family wants to enter something outside CIRCUIT, we will
+        help them prepare — that is as far as it goes.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="wrap section" id="questions">
+    <h2 class="px px--head" data-px="BEFORE YOU|SIGN UP" data-px-max="5">Before you sign up</h2>
+
+    <div class="grid grid--2" style="margin-top:32px">
+      <article class="frame">
+        <h3 class="card__title">Do you enter students into competitions?</h3>
+        <p class="t-body">
+          No. Our competition track is written and scored in-house. We are not
+          affiliated with any competition organiser and we do not register
+          students for external events.
+        </p>
+      </article>
+      <article class="frame">
+        <h3 class="card__title">What does a student take home?</h3>
+        <p class="t-body">
+          Their logbook, their code and their build notes. Kits stay with
+          CIRCUIT between terms; the deposit comes back when the kit does,
+          complete.
+        </p>
+      </article>
+      <article class="frame">
+        <h3 class="card__title">Does my child need to know how to code?</h3>
+        <p class="t-body">
+          No. SPARK starts in a block editor. RELAY moves to text. APEX writes
+          the whole control loop. Nobody is expected to arrive with any of it.
+        </p>
+      </article>
+      <article class="frame">
+        <h3 class="card__title">Is there a trial session?</h3>
+        <p class="t-body">
+          One per family, per band, in week one or two of a term. It is the same
+          session everyone else is doing — we do not run a separate demo class,
+          because a demo class does not tell you what a term is like.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="wrap section" id="enter">
+    <div class="frame frame--cyan" style="text-align:center">
+      <h2 class="px px--head" data-px="READY PLAYER" data-px-align="center" data-px-max="6">Ready player</h2>
+      <p class="t-lead" style="margin:24px auto 0">
+        Members log in for the timetable, the kit library and the competition
+        rubric.
+      </p>
+      <p style="margin-top:24px"><a class="btn" href="login.html">Log in</a></p>
+      <p class="t-cap" style="margin-top:16px">Term 3 is running now · Term 4 opens for booking in week ten</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__mark">CIRCUIT</p>
+        <p class="foot__blurb">
+          A robotics and AI academy in Kuwait City for ages 8 to 17. Twelve-week
+          terms, one robot per team, and a scored run at the end of every term.
+        </p>
+      </div>
+
+      <nav aria-label="Programme">
+        <h2>Programme</h2>
+        <ul class="stack">
+          <li><a href="index.html#teach">What we teach</a></li>
+          <li><a href="index.html#term">How a term runs</a></li>
+          <li><a href="index.html#bands">Age bands and fees</a></li>
+          <li><a href="index.html#competition">Competition track</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Members">
+        <h2>Members</h2>
+        <ul class="stack">
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="members.html#timetable">Class timetable</a></li>
+          <li><a href="members.html#kits">Robot kits</a></li>
+          <li><a href="members.html#rules">Bench rules</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2>Get in touch</h2>
+        <ul class="stack">
+          <li><a href="mailto:hello@circuit.example">hello@circuit.example</a></li>
+          <li>Kuwait City</li>
+          <li>Term times are on the timetable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bar">
+      <span class="t-cap">&copy; 2026 CIRCUIT &middot; Kuwait City</span>
+      <button class="chip" type="button" data-motion-toggle aria-pressed="false">Motion: on</button>
+      <button class="chip" type="button" data-assistant-show hidden>Show assistant</button>
+      <span class="t-cap foot__note">A student portfolio project.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/pixfont.js"></script>
+<script src="assets/js/pixel.js"></script>
+<script src="assets/js/sprites.js"></script>
+<script src="assets/js/session.js"></script>
+<script src="assets/js/scene.js"></script>
+<script src="assets/js/assistant.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

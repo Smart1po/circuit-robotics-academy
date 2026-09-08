@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — CIRCUIT</title>
+<meta name="description" content="Log in to the CIRCUIT members area for your class timetable, kit list and the competition rubric.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#07060E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/circuit.css">
+
+<!-- Sets the theme before the first paint, so the page never flashes
+     the wrong one on the way in. -->
+<script src="assets/js/theme.js"></script>
+</head>
+<body data-page="login">
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="glass" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="wrap hud__in">
+    <a class="hud__mark" href="index.html">CIRCUIT</a>
+    <span class="hud__stage">Stage 1-2 · Log in</span>
+    <nav class="hud__nav" aria-label="Main">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip" href="members.html">Members</a>
+      <a class="chip" href="login.html" aria-current="page">Log in</a>
+    </nav>
+  </div>
+</header>
+
+
+<main id="main" class="wrap login-page">
+  <div class="cabinet">
+
+    <div class="cabinet__coin">
+      <span class="sprite" data-sprite="coin" data-scale="5"></span>
+    </div>
+    <p class="t-cap" style="text-align:center;margin-bottom:16px">Insert coin to continue</p>
+
+    <div class="frame frame--cyan">
+
+      <h1 class="px px--head" data-px="MEMBER LOG IN" data-px-align="center" data-px-max="6">Member log in</h1>
+
+      <p class="t-body" style="margin-top:20px">
+        Members log in here for the term timetable, the kit library and the
+        competition rubric.
+      </p>
+
+      <div class="errsum" id="errsum" tabindex="-1" role="alert" data-open="false">
+        <h2>Something needs filling in</h2>
+        <ul id="errsum-list"></ul>
+      </div>
+
+      <!-- method="post" so that if JavaScript ever fails, the browser cannot
+           put an email and a password into the URL bar. The site's CSP blocks
+           form submission outright as a second line of defence. -->
+      <form id="login-form" method="post" novalidate style="margin-top:24px">
+
+        <div class="field">
+          <label for="email">Email</label>
+          <span class="field__hint" id="email-hint">We use it to work out what to call you inside.</span>
+          <input type="email" id="email" name="email" autocomplete="email"
+                 inputmode="email" aria-describedby="email-hint" placeholder="you@example.com">
+          <span class="field__err">Enter an email address.</span>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <span class="field__hint" id="pw-hint">Any password works on this preview. Please do not reuse a real one.</span>
+          <input type="password" id="password" name="password"
+                 autocomplete="off" aria-describedby="pw-hint">
+          <span class="field__err">Type anything at all; it is not checked.</span>
+        </div>
+
+        <p style="margin-top:24px">
+          <button class="btn btn--block" type="submit" disabled aria-disabled="true">Sign in</button>
+        </p>
+
+        <noscript>
+          <p class="notice" style="margin-top:16px">
+            Signing in needs JavaScript, and this browser has it switched off.
+            The public pages all work without it.
+          </p>
+        </noscript>
+
+        <p class="notice" style="margin-top:20px">
+          <b>Please do not use a real password here.</b> This sign-in is a
+          front-end preview: it accepts anything you type, checks nothing, and
+          stores nothing beyond your first name in this browser tab.
+        </p>
+      </form>
+
+      <p style="margin-top:24px"><a href="index.html">← Back to home</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__mark">CIRCUIT</p>
+        <p class="foot__blurb">
+          A robotics and AI academy in Kuwait City for ages 8 to 17. Twelve-week
+          terms, one robot per team, and a scored run at the end of every term.
+        </p>
+      </div>
+
+      <nav aria-label="Programme">
+        <h2>Programme</h2>
+        <ul class="stack">
+          <li><a href="index.html#teach">What we teach</a></li>
+          <li><a href="index.html#term">How a term runs</a></li>
+          <li><a href="index.html#bands">Age bands and fees</a></li>
+          <li><a href="index.html#competition">Competition track</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Members">
+        <h2>Members</h2>
+        <ul class="stack">
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="members.html#timetable">Class timetable</a></li>
+          <li><a href="members.html#kits">Robot kits</a></li>
+          <li><a href="members.html#rules">Bench rules</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2>Get in touch</h2>
+        <ul class="stack">
+          <li><a href="mailto:hello@circuit.example">hello@circuit.example</a></li>
+          <li>Kuwait City</li>
+          <li>Term times are on the timetable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bar">
+      <span class="t-cap">&copy; 2026 CIRCUIT &middot; Kuwait City</span>
+      <button class="chip" type="button" data-motion-toggle aria-pressed="false">Motion: on</button>
+      <button class="chip" type="button" data-assistant-show hidden>Show assistant</button>
+      <span class="t-cap foot__note">A student portfolio project.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/pixfont.js"></script>
+<script src="assets/js/pixel.js"></script>
+<script src="assets/js/sprites.js"></script>
+<script src="assets/js/session.js"></script>
+<script src="assets/js/scene.js"></script>
+<script src="assets/js/assistant.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

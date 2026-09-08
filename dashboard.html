@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-guard="members">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — CIRCUIT</title>
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#07060E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/circuit.css">
+
+<!-- Sets the theme before the first paint, so the page never flashes
+     the wrong one on the way in. -->
+<script src="assets/js/theme.js"></script>
+
+<!-- The gate runs here, in the head, before the body is parsed. A visitor who
+     is not logged in never sees a single pixel of member content. -->
+<script src="assets/js/session.js"></script>
+<script src="assets/js/guard.js"></script>
+</head>
+<body data-page="dashboard">
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="glass" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="wrap hud__in">
+    <a class="hud__mark" href="index.html">CIRCUIT</a>
+    <span class="hud__stage">Stage 2-1 · Dashboard</span>
+    <nav class="hud__nav" aria-label="Main">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip" href="dashboard.html" aria-current="page">Dashboard</a>
+      <a class="chip" href="members.html">Members</a>
+      <a class="chip" href="#" data-logout>Log out</a>
+    </nav>
+  </div>
+</header>
+
+
+<main id="main" class="wrap section">
+
+  <div class="greet">
+    <span class="sprite" data-sprite="dash" data-scale="4"></span>
+    <div class="greet__text">
+      <h1 class="px px--head" id="greeting" data-px="WELCOME BACK|MEMBER" data-px-max="8">Welcome back</h1>
+      <p class="t-cap" style="margin-top:12px">1UP · APEX · Term 3 · Week 7 of 12</p>
+    </div>
+  </div>
+
+  <div class="grid grid--2" style="margin-top:48px">
+
+    <!-- PANEL 1 -->
+    <section class="frame">
+      <h2 class="panel__h">Player card</h2>
+      <dl class="dl">
+        <dt>Member</dt><dd data-member-name>Member</dd>
+        <dt>Band</dt><dd>APEX · ages 14–17</dd>
+        <dt>Joined</dt><dd>Term 2</dd>
+        <dt>Slot</dt><dd>Sat 15:00–17:00 · Bench C</dd>
+        <dt>Team</dt><dd>Team 4 (3 members)</dd>
+      </dl>
+    </section>
+
+    <!-- PANEL 2 -->
+    <section class="frame">
+      <h2 class="panel__h">Term progress</h2>
+      <p class="readout" id="meter-readout">Week 7 of 12</p>
+      <div class="meter" id="meter"></div>
+      <p class="t-cap">Stage 2 · Control — Unit 03 · Sensors, Code &amp; Vision</p>
+      <p class="t-body" style="margin-top:12px">
+        Five weeks left in the term. Stage 3 moves to the Flight Bay in week
+        nine.
+      </p>
+    </section>
+
+    <!-- PANEL 3 -->
+    <section class="frame card">
+      <span class="card__sprite sprite" data-sprite="scan" data-scale="2"></span>
+      <h2 class="panel__h">Next session</h2>
+      <p class="readout" style="color:var(--cyan)">Saturday · 15:00–17:00</p>
+      <p class="t-cap" style="margin-top:8px">Bench C · Unit 03 · Sensors, Code &amp; Vision</p>
+      <dl class="dl" style="margin-top:16px">
+        <dt>Bring</dt><dd>Your logbook, your kit box, and a laptop with some charge in it.</dd>
+        <dt>This week</dt><dd>Tuning the proportional gain on the line follower. If yours already holds the line, bring the crossing tile from the mat and try it there.</dd>
+      </dl>
+    </section>
+
+    <!-- PANEL 4 -->
+    <section class="frame">
+      <h2 class="panel__h">Kit status</h2>
+      <dl class="dl">
+        <dt>Issued</dt><dd>Kit 03 "APEX ARM", week 1</dd>
+        <dt>Deposit</dt><dd>20 KD held, refunded when the kit comes back complete</dd>
+        <dt>Condition</dt><dd>1 part flagged</dd>
+      </dl>
+      <p class="flagged">
+        ⚠ <b>Servo horn</b> — cracked, reported week 6, replacement issued week 6.
+        No charge; the first replacement of a part is included.
+      </p>
+      <p style="margin-top:16px"><a href="members.html#kits">See the full kit list →</a></p>
+    </section>
+
+    <!-- PANEL 5 -->
+    <section class="frame card">
+      <span class="card__sprite sprite" data-sprite="tip" data-scale="2"></span>
+      <h2 class="panel__h">Logbook — last three entries</h2>
+      <p class="logline"><b>WK 7</b> — P-gain 0.8 wobbled at the corner, 0.45 held the line all the way round. Kept 0.45. Need to check it on the darker tile.</p>
+      <p class="logline"><b>WK 6</b> — Soldered the second sensor board. First one had a cold joint on the middle pin; reflowed it and it read properly.</p>
+      <p class="logline"><b>WK 5</b> — Measured 18.4 cm per motor rotation, not the 20 cm we calculated. Wheel slip on the mat. Adjusted the code rather than the wheel.</p>
+    </section>
+
+    <!-- PANEL 6 -->
+    <section class="frame frame--amber card">
+      <span class="card__sprite sprite" data-sprite="claw" data-scale="2"></span>
+      <h2 class="panel__h" style="color:var(--amber)">From your coach</h2>
+      <p class="t-body">
+        Team 4, your dry run is week nine and the mat will be set to the
+        competition layout. Bring the robot as it is — do not rebuild the
+        drivetrain the night before, because we want to see what the tuning
+        actually did.
+      </p>
+      <p class="t-body" style="margin-top:12px">
+        <b data-member-name>Member</b>, your logbook is the most complete in the band. Keep writing down
+        the number you rejected as well as the one you kept; that is the part
+        everyone else forgets.
+      </p>
+      <p class="t-cap" style="margin-top:16px">Posted week 7 · Bench C</p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__mark">CIRCUIT</p>
+        <p class="foot__blurb">
+          A robotics and AI academy in Kuwait City for ages 8 to 17. Twelve-week
+          terms, one robot per team, and a scored run at the end of every term.
+        </p>
+      </div>
+
+      <nav aria-label="Programme">
+        <h2>Programme</h2>
+        <ul class="stack">
+          <li><a href="index.html#teach">What we teach</a></li>
+          <li><a href="index.html#term">How a term runs</a></li>
+          <li><a href="index.html#bands">Age bands and fees</a></li>
+          <li><a href="index.html#competition">Competition track</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Members">
+        <h2>Members</h2>
+        <ul class="stack">
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="members.html#timetable">Class timetable</a></li>
+          <li><a href="members.html#kits">Robot kits</a></li>
+          <li><a href="members.html#rules">Bench rules</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2>Get in touch</h2>
+        <ul class="stack">
+          <li><a href="mailto:hello@circuit.example">hello@circuit.example</a></li>
+          <li>Kuwait City</li>
+          <li>Term times are on the timetable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bar">
+      <span class="t-cap">&copy; 2026 CIRCUIT &middot; Kuwait City</span>
+      <button class="chip" type="button" data-motion-toggle aria-pressed="false">Motion: on</button>
+      <button class="chip" type="button" data-assistant-show hidden>Show assistant</button>
+      <span class="t-cap foot__note">A student portfolio project.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/pixfont.js"></script>
+<script src="assets/js/pixel.js"></script>
+<script src="assets/js/sprites.js"></script>
+<script src="assets/js/session.js"></script>
+<script src="assets/js/scene.js"></script>
+<script src="assets/js/assistant.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

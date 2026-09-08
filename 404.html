@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — CIRCUIT</title>
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#07060E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/circuit.css">
+
+<!-- Sets the theme before the first paint, so the page never flashes
+     the wrong one on the way in. -->
+<script src="/assets/js/theme.js"></script>
+</head>
+<body data-page="404">
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="glass" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="wrap hud__in">
+    <a class="hud__mark" href="/">CIRCUIT</a>
+    <span class="hud__stage">Signal lost</span>
+    <nav class="hud__nav" aria-label="Main">
+      <a class="chip" href="/">Home</a>
+      <a class="chip" href="/members">Members</a>
+      <a class="chip" href="/login">Log in</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap login-page">
+  <div class="cabinet" style="text-align:center">
+
+    <div class="cabinet__coin">
+      <span class="sprite" data-sprite="probe" data-scale="5"></span>
+    </div>
+    <p class="t-cap" style="margin-bottom:16px">Scanning · nothing found</p>
+
+    <div class="frame frame--cyan">
+      <h1 class="px px--head" data-px="PAGE|NOT FOUND" data-px-align="center" data-px-max="7">Page not found</h1>
+
+      <p class="t-lead" style="margin:24px auto 0">
+        That address does not exist here. The robot went looking and came back
+        with nothing, which is roughly how a first line-following run goes too.
+      </p>
+
+      <p style="margin-top:24px"><a class="btn" href="/">Back to home</a></p>
+
+      <ul class="stack" style="margin-top:24px;text-align:left">
+        <li><a href="/#teach">What we teach</a></li>
+        <li><a href="/#bands">Age bands and fees</a></li>
+        <li><a href="/login">Log in to the members area</a></li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__mark">CIRCUIT</p>
+        <p class="foot__blurb">
+          A robotics and AI academy in Kuwait City for ages 8 to 17. Twelve-week
+          terms, one robot per team, and a scored run at the end of every term.
+        </p>
+      </div>
+
+      <nav aria-label="Programme">
+        <h2>Programme</h2>
+        <ul class="stack">
+          <li><a href="/#teach">What we teach</a></li>
+          <li><a href="/#term">How a term runs</a></li>
+          <li><a href="/#bands">Age bands and fees</a></li>
+          <li><a href="/#competition">Competition track</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Members">
+        <h2>Members</h2>
+        <ul class="stack">
+          <li><a href="/login">Log in</a></li>
+          <li><a href="/members#timetable">Class timetable</a></li>
+          <li><a href="/members#kits">Robot kits</a></li>
+          <li><a href="/members#rules">Bench rules</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2>Get in touch</h2>
+        <ul class="stack">
+          <li><a href="mailto:hello@circuit.example">hello@circuit.example</a></li>
+          <li>Kuwait City</li>
+          <li>Term times are on the timetable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bar">
+      <span class="t-cap">&copy; 2026 CIRCUIT &middot; Kuwait City</span>
+      <button class="chip" type="button" data-motion-toggle aria-pressed="false">Motion: on</button>
+      <button class="chip" type="button" data-assistant-show hidden>Show assistant</button>
+      <span class="t-cap foot__note">A student portfolio project.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/pixfont.js"></script>
+<script src="/assets/js/pixel.js"></script>
+<script src="/assets/js/sprites.js"></script>
+<script src="/assets/js/session.js"></script>
+<script src="/assets/js/scene.js"></script>
+<script src="/assets/js/assistant.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

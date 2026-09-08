@@ -1470,7 +1470,7 @@ html[data-theme="light"] ::-webkit-scrollbar-track {
 @media (max-width: 560px) {
   /* At phone width the wing keeps its grid but drops a pixel size, so the
      header does not eat a third of the screen. */
-  .mark__wing canvas { width: 56px !important; height: 28px !important; }
+  .mark__wing canvas { width: 63px !important; height: 27px !important; }
   .hud__in { min-height: 52px; }
   .hud__mark { font-size: 17px; letter-spacing: 0.2em; }
 }
@@ -1639,3 +1639,26 @@ html[data-motion="off"] .cord.is-swinging { animation: none; }
   .totop { left: var(--s3); bottom: 88px; }
 }
 
+
+/* ============================================================================
+   The assistant, minimised
+   It shrinks to its own flag and stays in the corner. It never disappears —
+   a control somebody has to go hunting for in the footer is a control they
+   have lost.
+   ========================================================================= */
+
+.asst.is-min .asst__flag {
+  min-height: 44px;
+  width: 44px;
+  padding: 0;
+  justify-content: center;
+  opacity: 0.72;
+}
+
+.asst.is-min .asst__flag:hover,
+.asst.is-min .asst__flag:focus-visible { opacity: 1; }
+
+@media (max-width: 480px) {
+  .asst.is-min { left: auto; }
+  .asst.is-min .asst__flag { width: 44px; margin-left: auto; }
+}

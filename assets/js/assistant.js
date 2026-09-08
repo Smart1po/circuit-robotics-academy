@@ -1,8 +1,9 @@
 /* CIRCUIT — the help assistant
  *
  * A white flag in the bottom corner. Press it and a small chat opens; press
- * "Hide" and it goes away entirely, and comes back from the link in the footer
- * whenever it is wanted.
+ * "Minimise" and it shrinks to just the flag and waits there. It never
+ * disappears — a control somebody has to go hunting for is a control they have
+ * lost — so the smallest it ever gets is still one tap away.
  *
  * It answers out of a table written by hand from the content of this site. It
  * makes no network request — there is no API behind it, and it does not invent
@@ -198,8 +199,8 @@
     var hideBtn = doc.createElement('button');
     hideBtn.type = 'button';
     hideBtn.className = 'asst__x';
-    hideBtn.textContent = 'Hide';
-    hideBtn.title = 'Hide the assistant for this visit';
+    hideBtn.textContent = 'Minimise';
+    hideBtn.title = 'Shrink the assistant to a small flag in the corner';
 
     var closeBtn = doc.createElement('button');
     closeBtn.type = 'button';
@@ -358,35 +359,53 @@
       if (e.key === 'Escape' && !panel.hidden) close();
     });
 
-    /* --- hiding it entirely --- */
+    /* --- getting it out of the way ---------------------------------------
+     * Minimising shrinks it to a small flag in the corner. It never vanishes:
+     * a control the visitor has to go hunting for in the footer is a control
+     * they have lost. Small and present beats invisible and findable.
+     * ------------------------------------------------------------------- */
     var restore = doc.querySelector('[data-assistant-show]');
 
-    function setHidden(hidden) {
-      wrap.hidden = hidden;
-      if (restore) restore.hidden = !hidden;
+    function setMinimised(min) {
+      wrap.classList.toggle('is-min', min);
+
+      /* The label is only noise once the thing is the size of its own icon. */
+      flagText.hidden = min;
+      /* With the words hidden the button needs a name of its own. */
+      if (min) flag.setAttribute('aria-label', 'Open the CIRCUIT assistant');
+      else flag.removeAttribute('aria-label');
+
+      /* The footer link is a second route back, offered only when it is
+       * actually useful. */
+      if (restore) restore.hidden = !min;
 
       try {
-        if (hidden) global.sessionStorage.setItem(HIDDEN_KEY, '1');
+        if (min) global.sessionStorage.setItem(HIDDEN_KEY, '1');
         else global.sessionStorage.removeItem(HIDDEN_KEY);
       } catch (err) { /* private mode */ }
     }
 
     hideBtn.addEventListener('click', function () {
       close();
-      setHidden(true);
-      if (restore) restore.focus();
+      setMinimised(true);
+      flag.focus();
+    });
+
+    /* Opening it from the small state puts it back to full size. */
+    flag.addEventListener('click', function () {
+      if (wrap.classList.contains('is-min')) setMinimised(false);
     });
 
     if (restore) {
       restore.addEventListener('click', function () {
-        setHidden(false);
+        setMinimised(false);
         flag.focus();
       });
     }
 
-    var wasHidden = false;
-    try { wasHidden = global.sessionStorage.getItem(HIDDEN_KEY) === '1'; } catch (err) {}
-    setHidden(wasHidden);
+    var wasMin = false;
+    try { wasMin = global.sessionStorage.getItem(HIDDEN_KEY) === '1'; } catch (err) {}
+    setMinimised(wasMin);
   }
 
   if (doc.readyState === 'loading') {

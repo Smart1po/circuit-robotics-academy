@@ -6,12 +6,23 @@
 <title>Page not found — CIRCUIT</title>
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#07060E">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/css/circuit.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/circuit.css">
+
+<!-- A 404 is the one page that must still read when everything else is
+     missing. If the stylesheet above never arrives - a deep path, a bad
+     deploy - these few rules keep it legible instead of raw markup. -->
+<style>
+  body { background:#07060E; color:#EDEBFF; margin:0;
+         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+         line-height:1.65; }
+  a { color:#58E7FF; }
+  #main { max-width:640px; margin:0 auto; padding:48px 16px; }
+</style>
 
 <!-- Sets the theme before the first paint, so the page never flashes
      the wrong one on the way in. -->
-<script src="/assets/js/theme.js"></script>
+<script src="assets/js/theme.js"></script>
 </head>
 <body data-page="404">
 
@@ -20,12 +31,12 @@
 
 <header class="hud">
   <div class="wrap hud__in">
-    <a class="hud__mark mark" href="/"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
+    <a class="hud__mark mark" href="index.html"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
     <span class="hud__stage">Signal lost</span>
     <nav class="hud__nav" aria-label="Main">
-      <a class="chip" href="/">Home</a>
-      <a class="chip" href="/members">Members</a>
-      <a class="chip" href="/login">Log in</a>
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip" href="members.html">Members</a>
+      <a class="chip" href="login.html">Log in</a>
     </nav>
   </div>
 </header>
@@ -46,12 +57,12 @@
         with nothing, which is roughly how a first line-following run goes too.
       </p>
 
-      <p style="margin-top:24px"><a class="btn" href="/">Back to home</a></p>
+      <p style="margin-top:24px"><a class="btn" href="index.html">Back to home</a></p>
 
       <ul class="stack" style="margin-top:24px;text-align:left">
-        <li><a href="/#teach">What we teach</a></li>
-        <li><a href="/#bands">Age bands and fees</a></li>
-        <li><a href="/login">Log in to the members area</a></li>
+        <li><a href="index.html#teach">What we teach</a></li>
+        <li><a href="index.html#bands">Age bands and fees</a></li>
+        <li><a href="login.html">Log in to the members area</a></li>
       </ul>
     </div>
   </div>
@@ -71,20 +82,20 @@
       <nav aria-label="Programme">
         <h2>Programme</h2>
         <ul class="stack">
-          <li><a href="/#teach">What we teach</a></li>
-          <li><a href="/#term">How a term runs</a></li>
-          <li><a href="/#bands">Age bands and fees</a></li>
-          <li><a href="/#competition">Competition track</a></li>
+          <li><a href="index.html#teach">What we teach</a></li>
+          <li><a href="index.html#term">How a term runs</a></li>
+          <li><a href="index.html#bands">Age bands and fees</a></li>
+          <li><a href="index.html#competition">Competition track</a></li>
         </ul>
       </nav>
 
       <nav aria-label="Members">
         <h2>Members</h2>
         <ul class="stack">
-          <li><a href="/login">Log in</a></li>
-          <li><a href="/members#timetable">Class timetable</a></li>
-          <li><a href="/members#kits">Robot kits</a></li>
-          <li><a href="/members#rules">Bench rules</a></li>
+          <li><a href="login.html">Log in</a></li>
+          <li><a href="members.html#timetable">Class timetable</a></li>
+          <li><a href="members.html#kits">Robot kits</a></li>
+          <li><a href="members.html#rules">Bench rules</a></li>
         </ul>
       </nav>
 
@@ -107,13 +118,13 @@
   </div>
 </footer>
 
-<script src="/assets/js/pixfont.js"></script>
-<script src="/assets/js/pixel.js"></script>
-<script src="/assets/js/sprites.js"></script>
-<script src="/assets/js/session.js"></script>
-<script src="/assets/js/scene.js"></script>
-<script src="/assets/js/assistant.js"></script>
-<script src="/assets/js/app.js"></script>
-<script src="/assets/js/nav.js"></script>
+<script src="assets/js/pixfont.js"></script>
+<script src="assets/js/pixel.js"></script>
+<script src="assets/js/sprites.js"></script>
+<script src="assets/js/session.js"></script>
+<script src="assets/js/scene.js"></script>
+<script src="assets/js/assistant.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/nav.js"></script>
 </body>
 </html>

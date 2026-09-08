@@ -374,6 +374,10 @@ a:hover { color: var(--text); }
   cursor: pointer;
 }
 .chip:hover { color: var(--text); background: var(--panel); }
+
+/* display:inline-block above beats the user agent's [hidden] rule, which
+   would otherwise leave a hidden chip visible and in the tab order. */
+.chip[hidden] { display: none; }
 .chip[aria-current="page"] { color: var(--cyan); background: var(--panel); }
 
 /* ============================================================================
@@ -659,11 +663,14 @@ td b { color: var(--cyan); font-weight: 700; }
   background: var(--panel-hi);
   color: var(--text);
   border: 0;
+  /* --edge, not --edge-dim: a form field's boundary is a non-text UI
+     component and has to clear 3:1 against what surrounds it. The dim tone
+     managed 1.6:1 and the box read as decoration rather than an input. */
   box-shadow:
-    0 calc(var(--px) * -1) 0 var(--edge-dim),
-    0 var(--px) 0 var(--edge-dim),
-    calc(var(--px) * -1) 0 0 var(--edge-dim),
-    var(--px) 0 0 var(--edge-dim);
+    0 calc(var(--px) * -1) 0 var(--edge),
+    0 var(--px) 0 var(--edge),
+    calc(var(--px) * -1) 0 0 var(--edge),
+    var(--px) 0 0 var(--edge);
 }
 
 .field input::placeholder { color: var(--text-place); }
@@ -1434,3 +1441,194 @@ html[data-theme="light"] ::-webkit-scrollbar-track {
   .asst__panel { width: 100%; }
   .asst__flag { justify-content: center; }
 }
+
+/* ============================================================================
+   THE MARK — a metal wing
+   Spread when the lights are on, folded shut when they are off. It flexes
+   once on the way between the two.
+   ========================================================================= */
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  text-decoration: none;
+}
+
+.mark__wing {
+  display: block;
+  transform-origin: 50% 60%;
+}
+
+.mark__wing.is-flexing { animation: flex-wing 420ms steps(4) 1; }
+
+@keyframes flex-wing {
+  0%   { transform: scaleX(0.55) translateY(2px); }
+  55%  { transform: scaleX(1.12) translateY(-2px); }
+  100% { transform: scaleX(1) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark__wing.is-flexing { animation: none; }
+}
+html[data-motion="off"] .mark__wing.is-flexing { animation: none; }
+
+/* ============================================================================
+   THE CORD SWINGS
+   Touch it and the whole chain sways, then settles. Pivot at the ceiling,
+   stepped so it swings in pixel jumps rather than gliding.
+   ========================================================================= */
+
+.cord { transform-origin: 50% 0; }
+
+.cord.is-swinging { animation: sway 1.3s steps(2) 1; }
+
+@keyframes sway {
+  0%   { transform: rotate(0deg); }
+  14%  { transform: rotate(7deg); }
+  32%  { transform: rotate(-5deg); }
+  50%  { transform: rotate(3.5deg); }
+  68%  { transform: rotate(-2deg); }
+  84%  { transform: rotate(1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cord.is-swinging { animation: none; }
+}
+html[data-motion="off"] .cord.is-swinging { animation: none; }
+
+/* ============================================================================
+   THE BIRD
+   The loading screen. It covers the page for about half a second while the
+   next one loads, and it is the only thing on the site that ever covers text.
+   ========================================================================= */
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: var(--void);
+  opacity: 0;
+}
+
+.veil[hidden] { display: none; }
+
+.veil.is-flying { animation: veil-in 200ms steps(3) forwards; }
+
+@keyframes veil-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.veil__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s5);
+}
+
+.veil__bird {
+  display: block;
+  transform: translateX(-40vw);
+}
+
+.veil.is-flying .veil__bird {
+  animation: fly-across 900ms steps(12) 1 forwards;
+}
+
+/* Left to right, rising slightly, the way a bird actually crosses a window. */
+@keyframes fly-across {
+  0%   { transform: translate3d(-46vw, 14px, 0); }
+  100% { transform: translate3d(46vw, -14px, 0); }
+}
+
+.veil__word {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil { display: none; }
+}
+
+/* ============================================================================
+   BACK TO THE TOP
+   A short length of the same rope as the scrollbar, with a ring to grab.
+   Bottom LEFT, because the assistant already owns the bottom right.
+   ========================================================================= */
+
+.totop {
+  position: fixed;
+  left: var(--s4);
+  bottom: var(--s4);
+  z-index: 65;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s1);
+
+  min-height: 48px;
+  padding: var(--s2) var(--s3) var(--s3);
+  border: 0;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+
+  box-shadow:
+    0 calc(var(--px) * -1) 0 var(--edge),
+    0 var(--px) 0 var(--edge),
+    calc(var(--px) * -1) 0 0 var(--edge),
+    var(--px) 0 0 var(--edge);
+}
+
+.totop[hidden] { display: none; }
+
+.totop:hover { background: var(--panel-hi); }
+.totop:active { transform: translateY(2px); }
+
+.totop__rope {
+  width: 6px;
+  height: 16px;
+  background: repeating-linear-gradient(135deg,
+    #E0A868 0 2px,
+    #C08A4E 2px 4px,
+    #9A6835 4px 6px);
+}
+
+.totop__arrow {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 9px solid var(--amber);
+}
+
+.totop__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.totop:hover .totop__label { color: var(--text); }
+
+@media (max-width: 480px) {
+  .totop { left: var(--s3); bottom: 88px; }
+}
+
+/* ============================================================================
+   The party grew, and its members are not all the same size
+   ========================================================================= */
+
+.party { align-items: flex-end; gap: var(--s4) var(--s5); }
+
+.party__one--sm .sprite { opacity: 0.9; }
+.party__one--lg { margin-bottom: -4px; }

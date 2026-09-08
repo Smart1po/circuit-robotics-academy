@@ -169,12 +169,17 @@
    * The welcoming party
    * ------------------------------------------------------------------ */
   var PARTY = [
-    { sprite: 'bolt',  cheer: 'Yes!' },
-    { sprite: 'hex',   cheer: 'You made it' },
-    { sprite: 'arm',   cheer: 'Nice' },
-    { sprite: 'probe', cheer: 'Woo' },
-    { sprite: 'flit',  cheer: 'Hooray' },
-    { sprite: 'mote',  cheer: 'Bravo' }
+    { sprite: 'chip',  cheer: 'Yes!',        scale: 2, size: 'sm' },
+    { sprite: 'hex',   cheer: 'You made it', scale: 3, size: '' },
+    { sprite: 'bolt',  cheer: 'Nice',        scale: 4, size: 'lg' },
+    { sprite: 'arm',   cheer: 'Bravo',       scale: 3, size: '' },
+    { sprite: 'cog',   cheer: 'Woo',         scale: 2, size: 'sm' },
+    { sprite: 'dash',  cheer: 'Hooray',      scale: 4, size: 'lg' },
+    { sprite: 'probe', cheer: 'Well read',   scale: 3, size: '' },
+    { sprite: 'flit',  cheer: 'Top marks',   scale: 3, size: '' },
+    { sprite: 'mote',  cheer: 'Whee',        scale: 2, size: 'sm' },
+    { sprite: 'tip',   cheer: 'Good one',    scale: 2, size: 'sm' },
+    { sprite: 'pip',   cheer: 'Ha!',         scale: 3, size: '' }
   ];
 
   function buildParty() {
@@ -184,7 +189,8 @@
 
     for (var i = 0; i < PARTY.length; i++) {
       var one = doc.createElement('div');
-      one.className = 'party__one';
+      one.className = 'party__one' +
+        (PARTY[i].size ? ' party__one--' + PARTY[i].size : '');
 
       var z = doc.createElement('span');
       z.className = 'party__z';
@@ -194,7 +200,7 @@
       var host = doc.createElement('span');
       host.className = 'sprite';
       host.setAttribute('data-sprite', PARTY[i].sprite);
-      host.setAttribute('data-scale', '3');
+      host.setAttribute('data-scale', String(PARTY[i].scale));
 
       var cheer = doc.createElement('span');
       cheer.className = 'party__cheer';

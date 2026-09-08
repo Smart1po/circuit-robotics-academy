@@ -23,13 +23,13 @@
 
 <header class="hud">
   <div class="wrap hud__in">
-    <a class="hud__mark" href="index.html">CIRCUIT</a>
+    <a class="hud__mark mark" href="index.html"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
     <span class="hud__stage">Stage 2-2 · Members</span>
     <nav class="hud__nav" aria-label="Main">
       <a class="chip" href="index.html">Home</a>
       <a class="chip" href="dashboard.html">Dashboard</a>
       <a class="chip" href="members.html" aria-current="page">Members</a>
-      <a class="chip" href="#" data-logout>Log out</a>
+      <button class="chip" type="button" data-logout>Log out</button>
     </nav>
   </div>
 </header>
@@ -57,9 +57,9 @@
       <div class="rail__car"><span class="sprite" data-sprite="bolt" data-scale="3"></span></div>
     </div>
 
-    <div class="tablewrap">
+    <div class="tablewrap" tabindex="0" role="region" aria-labelledby="timetable-caption">
       <table>
-        <caption>Term 3 timetable. CAP is the seat cap per bench, not an availability count.</caption>
+        <caption id="timetable-caption">Term 3 timetable. CAP is the seat cap per bench, not an availability count.</caption>
         <thead>
           <tr><th scope="col">Day</th><th scope="col">Time</th><th scope="col">Band</th><th scope="col">Room</th><th scope="col">Cap</th></tr>
         </thead>
@@ -188,9 +188,10 @@
       </p>
     </div>
 
-    <div class="tablewrap" style="margin-top:24px">
+    <div class="tablewrap" tabindex="0" role="region" aria-labelledby="scoring-caption"
+         style="margin-top:24px">
       <table>
-        <caption>Scoring — maximum 105 points.</caption>
+        <caption id="scoring-caption">Scoring — maximum 105 points.</caption>
         <thead><tr><th scope="col">Objective</th><th scope="col">Points</th></tr></thead>
         <tbody>
           <tr><th scope="row">Robot leaves the start square under its own control</th><td>5</td></tr>
@@ -365,5 +366,6 @@
 <script src="assets/js/scene.js"></script>
 <script src="assets/js/assistant.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/nav.js"></script>
 </body>
 </html>

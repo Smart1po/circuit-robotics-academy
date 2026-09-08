@@ -28,6 +28,7 @@
     p: '#14122A',   /* pad, recessed                      */
     r: '#ADA6D6',   /* rotor blur                         */
     h: '#FF6B6B',   /* handle                             */
+    S: '#C9D2FF',   /* polished metal                     */
     d: '#443D80'    /* shadow                             */
   };
 
@@ -436,6 +437,150 @@
     '...dddd...'
   ];
 
+
+  /* --- WING ---------------------------------------------------------------
+   * The academy mark. A metal wing: spread when the lights are on, folded
+   * shut when they are off. It is the only sprite that means something rather
+   * than doing something, so it is the one that sits in the header.
+   * 16 x 12, two states rather than two animation frames.
+   * --------------------------------------------------------------------- */
+  var WING_OPEN = [
+    '................',
+    '....ss....ss....',
+    '...ssss..ssss...',
+    '..ssSSSSSSSSss..',
+    '.ssSSSSSSSSSSss.',
+    'ssSSSSllllSSSSss',
+    '.ssSSSSllSSSSss.',
+    '..ssSSSSSSSSss..',
+    '...sssSSSSsss...',
+    '....ss.SS.ss....',
+    '.......SS.......',
+    '................'
+  ];
+
+  var WING_SHUT = [
+    '................',
+    '.......ss.......',
+    '......ssss......',
+    '......sSSs......',
+    '.....ssSSss.....',
+    '.....sSllSs.....',
+    '.....sSllSs.....',
+    '.....ssSSss.....',
+    '......sSSs......',
+    '......ssss......',
+    '.......SS.......',
+    '................'
+  ];
+
+  /* --- BIRD ---------------------------------------------------------------
+   * The metal bird that carries you between pages. Wise stare, blue eyes.
+   * 20 x 14, three frames: wings up, level, down.
+   * --------------------------------------------------------------------- */
+  var BIRD_UP = [
+    '..ss............ss..',
+    '.ssss..........ssss.',
+    '..ssss........ssss..',
+    '...ssss..ss..ssss...',
+    '....sssSSSSSSsss....',
+    '.....sSSSSSSSSs.....',
+    '.....SSScSScSSS.....',
+    '.....SSSSSSSSSS.....',
+    '......SSaaaaSS......',
+    '.......SSSSSS.......',
+    '........SSSS........',
+    '.........SS.........',
+    '....................',
+    '....................'
+  ];
+
+  var BIRD_MID = [
+    '....................',
+    '..ss............ss..',
+    '.ssss..........ssss.',
+    '..ssss...ss...ssss..',
+    '...sssssSSSSsssss...',
+    '....ssSSSSSSSSss....',
+    '.....SSScSScSSS.....',
+    '.....SSSSSSSSSS.....',
+    '......SSaaaaSS......',
+    '.......SSSSSS.......',
+    '........SSSS........',
+    '.........SS.........',
+    '....................',
+    '....................'
+  ];
+
+  var BIRD_DOWN = [
+    '....................',
+    '....................',
+    '.........ss.........',
+    '........SSSS........',
+    '.......SSSSSS.......',
+    '......SSSSSSSS......',
+    '.....SSScSScSSS.....',
+    '.....SSSSSSSSSS.....',
+    '..ss..SSaaaaSS..ss..',
+    '.ssss..SSSSSS..ssss.',
+    '..ssss.SSSS..ssss...',
+    '...ssss.SS..ssss....',
+    '....ssss...ssss.....',
+    '.....ss.....ss......'
+  ];
+
+  /* --- CHIP ---------------------------------------------------------------
+   * A little bench helper that trundles. Small, for the crowd at the bottom.
+   * 8 x 7, two frames.
+   * --------------------------------------------------------------------- */
+  var CHIP_A = [
+    '..oooo..',
+    '.obccbo.',
+    '.obbbbo.',
+    '.oooooo.',
+    '.owoowo.',
+    '.oooooo.',
+    '........'
+  ];
+
+  var CHIP_B = [
+    '..oooo..',
+    '.obccbo.',
+    '.obbbbo.',
+    '.oooooo.',
+    '.oowwoo.',
+    '.oooooo.',
+    '........'
+  ];
+
+  /* --- COG ----------------------------------------------------------------
+   * A gear that turns. It is the smallest thing in the workshop that moves.
+   * 9 x 9, two frames, a quarter turn apart.
+   * --------------------------------------------------------------------- */
+  var COG_A = [
+    '...sss...',
+    '.s.sss.s.',
+    '.sssssss.',
+    'sssbbbsss',
+    'ssbbbbbss',
+    'sssbbbsss',
+    '.sssssss.',
+    '.s.sss.s.',
+    '...sss...'
+  ];
+
+  var COG_B = [
+    '..s...s..',
+    '.sssssss.',
+    's.sssss.s',
+    '.ssbbbss.',
+    '.sbbbbbs.',
+    '.ssbbbss.',
+    's.sssss.s',
+    '.sssssss.',
+    '..s...s..'
+  ];
+
   /* --- Registry ---------------------------------------------------------- */
   var CAST = {
     bolt:  { frames: [BOLT_A, BOLT_B], palette: P, fps: 5, scale: 3 },
@@ -451,7 +596,16 @@
     hex:   { frames: [HEX_A, HEX_B], palette: P, fps: 4, scale: 3 },
     mote:  { frames: [MOTE_A, MOTE_B], palette: P, fps: 12, scale: 3, bob: 2, bobSpeed: 2.2 },
     flit:  { frames: [FLIT_A, FLIT_B], palette: P, fps: 5, scale: 3, bob: 4, bobSpeed: 1.1 },
-    probe: { frames: [PROBE_A, PROBE_A, PROBE_A, PROBE_B], palette: P, fps: 2, scale: 3, bob: 3, bobSpeed: 0.9 }
+    probe: { frames: [PROBE_A, PROBE_A, PROBE_A, PROBE_B], palette: P, fps: 2, scale: 3, bob: 3, bobSpeed: 0.9 },
+
+    chip:  { frames: [CHIP_A, CHIP_B], palette: P, fps: 5, scale: 3 },
+    cog:   { frames: [COG_A, COG_B], palette: P, fps: 3, scale: 3 },
+
+    /* The mark. Which state shows is decided by the lights, not by a timer. */
+    'wing-open': { frames: [WING_OPEN], palette: P, fps: 1, scale: 2 },
+    'wing-shut': { frames: [WING_SHUT], palette: P, fps: 1, scale: 2 },
+
+    bird:  { frames: [BIRD_UP, BIRD_MID, BIRD_DOWN, BIRD_MID], palette: P, fps: 9, scale: 4 }
   };
 
   global.CircuitCast = CAST;

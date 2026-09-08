@@ -397,6 +397,25 @@
     for (var i = 0; i < mounted.length; i++) mounted[i].draw();
   }
 
+  /* Swap the sprite inside one host that has already been mounted — used by
+   * the wing mark, which changes which sprite it is rather than animating. */
+  function remount(host) {
+    var def = registry[host.getAttribute('data-sprite')];
+    var canvas = host.querySelector('canvas');
+    if (!def || !canvas) return;
+
+    for (var i = 0; i < mounted.length; i++) {
+      if (mounted[i].canvas !== canvas) continue;
+
+      mounted[i].frames = def.frames;
+      mounted[i].palette = def.palette;
+      mounted[i].frame = 0;
+      mounted[i].measure();
+      mounted[i].draw();
+      return;
+    }
+  }
+
   global.Pixel = {
     ticker: Ticker,
     define: define,
@@ -404,6 +423,7 @@
     startGlitter: startGlitter,
     burst: burst,
     repaint: repaint,
+    remount: remount,
     setMotion: setMotion,
     motionOn: function () { return motionOn; },
     onMotionChange: onMotionChange,

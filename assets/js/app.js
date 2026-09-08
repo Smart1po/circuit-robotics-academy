@@ -37,9 +37,13 @@
 
     if (!btn) return;
 
+    /* This button's visible words ARE its state, so it does not also carry
+     * aria-pressed. A control that changes its name and its pressed state in
+     * the same breath announces a contradiction. */
+    btn.removeAttribute('aria-pressed');
+
     function paint() {
       var isOff = html.getAttribute('data-motion') === 'off';
-      btn.setAttribute('aria-pressed', isOff ? 'true' : 'false');
       btn.textContent = isOff ? 'MOTION: OFF' : 'MOTION: ON';
     }
 
@@ -169,10 +173,27 @@
     var summary = doc.getElementById('errsum');
     var list = doc.getElementById('errsum-list');
 
+    /* Read the base description once, before anything overwrites it, so the
+     * error id can be added and removed without eating the hint. */
+    function baseDescribedBy(input) {
+      if (!input.__baseDesc) {
+        input.__baseDesc = input.getAttribute('aria-describedby') || '';
+      }
+      return input.__baseDesc;
+    }
+
     function setBad(input, bad) {
       var field = input.closest('.field');
       if (field) field.classList.toggle('field--bad', bad);
+
       input.setAttribute('aria-invalid', bad ? 'true' : 'false');
+
+      var base = baseDescribedBy(input);
+      var errId = input.id + '-err';
+
+      /* Point the input at its own error text, so a screen reader reads the
+       * message when focus lands on the field — not only in the summary. */
+      input.setAttribute('aria-describedby', bad ? (base + ' ' + errId).trim() : base);
     }
 
     form.addEventListener('submit', function (e) {

@@ -21,7 +21,7 @@
 
 <header class="hud">
   <div class="wrap hud__in">
-    <a class="hud__mark" href="index.html">CIRCUIT</a>
+    <a class="hud__mark mark" href="index.html"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
     <span class="hud__stage">Stage 1-2 · Log in</span>
     <nav class="hud__nav" aria-label="Main">
       <a class="chip" href="index.html">Home</a>
@@ -64,7 +64,7 @@
           <span class="field__hint" id="email-hint">We use it to work out what to call you inside.</span>
           <input type="email" id="email" name="email" autocomplete="email"
                  inputmode="email" aria-describedby="email-hint" placeholder="you@example.com">
-          <span class="field__err">Enter an email address.</span>
+          <span class="field__err" id="email-err">Enter an email address.</span>
         </div>
 
         <div class="field">
@@ -72,7 +72,7 @@
           <span class="field__hint" id="pw-hint">Any password works on this preview. Please do not reuse a real one.</span>
           <input type="password" id="password" name="password"
                  autocomplete="off" aria-describedby="pw-hint">
-          <span class="field__err">Type anything at all; it is not checked.</span>
+          <span class="field__err" id="password-err">Type anything at all; it is not checked.</span>
         </div>
 
         <p style="margin-top:24px">
@@ -155,5 +155,6 @@
 <script src="assets/js/scene.js"></script>
 <script src="assets/js/assistant.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/nav.js"></script>
 </body>
 </html>

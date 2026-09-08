@@ -15,6 +15,11 @@ one robot per team, and a scored run at the end of every term.
 
 https://smart1po.github.io/circuit-robotics-academy/
 
+Deployed from GitHub Pages rather than Vercel — Vercel needed an account sign-in that could not
+be done in the session. Every commit to `main` republishes the live address automatically, which
+is the same continuous deployment either way: save, push, and the page updates without doing
+anything else.
+
 ## 3. GitHub link
 
 https://github.com/Smart1po/circuit-robotics-academy
@@ -131,8 +136,17 @@ path. The Content Security Policy enforces it rather than trusting it.
   beside rather than scattered as decoration.
 - The cursor leaves a trail of 3px sparks, snapped to a 3px grid, capped and gated by pointer
   distance so a fast sweep leaves an even trail instead of a solid bar.
-- The scrollbar is a braided rope. The light switch is a pull cord hanging from the top corner.
-  Machines asleep at the very bottom of the page wake up and cheer if you read all the way down.
+- The academy mark is a metal wing. Spread when the lights are on, folded shut when they are
+  off, and it flexes once on the way between the two.
+- Clicking a link that leaves the page sends a metal bird across it — wise stare, blue eyes —
+  while the next page loads.
+- The scrollbar is a braided rope. The light switch is a pull cord hanging from the top corner
+  that swings when you touch it.
+- Eleven machines sleep in a yard at the very bottom of the page. Read all the way down and
+  they wake up, walk about at their own paces, turn round at the walls and hop.
+- A help assistant behind a white flag in the corner, answering out of a hand-written table of
+  the site's own content. It can be sent away and brought back from the footer.
+- A rope back to the top, bottom left, out of the assistant's way.
 
 All of it stops. There is a **MOTION** switch in the footer, and the site opens with motion off
 for anyone whose system asks for reduced motion.

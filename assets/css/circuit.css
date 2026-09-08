@@ -1730,3 +1730,34 @@ html[data-motion="off"] .cord.is-swinging .cord__bulb { animation: none; }
   92%  { transform: rotate(-1deg); }
   100% { transform: rotate(0deg); }
 }
+
+/* ============================================================================
+   Keep me signed in
+   ========================================================================= */
+
+.keepme {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s5);
+}
+
+.keepme input {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  accent-color: var(--btn-face);
+  cursor: pointer;
+}
+
+.keepme label {
+  font-size: 14px;
+  color: var(--text-dim);
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.keepme input:focus-visible {
+  outline: var(--px) solid var(--ring);
+  outline-offset: 2px;
+}

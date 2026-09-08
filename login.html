@@ -75,6 +75,11 @@
           <span class="field__err" id="password-err">Type anything at all; it is not checked.</span>
         </div>
 
+        <p class="keepme">
+          <input type="checkbox" id="keepme" name="keepme">
+          <label for="keepme">Keep me signed in on this device</label>
+        </p>
+
         <p style="margin-top:24px">
           <button class="btn btn--block" type="submit" disabled aria-disabled="true">Sign in</button>
         </p>
@@ -88,8 +93,10 @@
 
         <p class="notice" style="margin-top:20px">
           <b>Please do not use a real password here.</b> This sign-in is a
-          front-end preview: it accepts anything you type, checks nothing, and
-          stores nothing beyond your first name in this browser tab.
+          front-end preview: it accepts anything you type and checks nothing.
+          Your password is never stored, sent or written down anywhere. Tick
+          the box above and this browser will remember your name and address
+          on this device only — never the password, and never on our side.
         </p>
       </form>
 

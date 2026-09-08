@@ -170,6 +170,16 @@
 
     var email = doc.getElementById('email');
     var pass = doc.getElementById('password');
+    var keep = doc.getElementById('keepme');
+
+    /* Fill the address in from last time, so a member does not retype it on
+     * every visit. Only the address: there is no password to remember, and
+     * the box below is deliberately left empty. */
+    var known = global.CircuitSession.rememberedEmail();
+    if (known && !email.value) {
+      email.value = known;
+      if (keep) keep.checked = true;
+    }
     var summary = doc.getElementById('errsum');
     var list = doc.getElementById('errsum-list');
 
@@ -242,7 +252,7 @@
        * the session cannot be written, the gate on the next page bounces the
        * visitor straight back here, and the loop has no visible cause. Say it
        * instead of letting them bounce. */
-      if (!global.CircuitSession.start(email.value)) {
+      if (!global.CircuitSession.start(email.value, keep && keep.checked)) {
         list.innerHTML = '';
 
         var stuck = doc.createElement('li');

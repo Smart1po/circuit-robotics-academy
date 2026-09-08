@@ -178,7 +178,7 @@ a:hover { color: var(--text); }
    ========================================================================= */
 
 .t-eyebrow {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -186,7 +186,7 @@ a:hover { color: var(--text); }
 }
 
 .t-cap {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -283,12 +283,12 @@ a:hover { color: var(--text); }
   align-items: center;
   justify-content: center;
   gap: var(--s3);
-  padding: var(--s3) var(--s5);
-  min-height: 48px;
+  padding: var(--s4) var(--s6);
+  min-height: 54px;
   border: 0;
   background: var(--btn-face);
   color: var(--btn-ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -338,16 +338,16 @@ a:hover { color: var(--text); }
 }
 
 .hud__mark {
-  font-size: 15px;
+  font-size: 21px;
   font-weight: 700;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.28em;
   color: var(--cyan);
   text-decoration: none;
 }
 .hud__mark:hover { color: var(--text); }
 
 .hud__stage {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.14em;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -362,8 +362,8 @@ a:hover { color: var(--text); }
 
 .chip {
   display: inline-block;
-  padding: var(--s2) var(--s3);
-  font-size: 12px;
+  padding: var(--s3) var(--s4);
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -470,7 +470,7 @@ a:hover { color: var(--text); }
 }
 
 .card__no {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.18em;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -529,7 +529,7 @@ a:hover { color: var(--text); }
 }
 
 .stage__tag {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -613,13 +613,13 @@ caption {
 th, td {
   padding: var(--s3) var(--s4);
   text-align: left;
-  font-size: 14px;
+  font-size: 15px;
   border-bottom: 2px solid var(--edge-dim);
   white-space: nowrap;
 }
 
 thead th {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -639,7 +639,7 @@ td b { color: var(--cyan); font-weight: 700; }
 
 .field label {
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -748,7 +748,7 @@ td b { color: var(--cyan); font-weight: 700; }
 .greet__text { flex: 1 1 260px; min-width: 0; }
 
 .panel__h {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -808,7 +808,7 @@ td b { color: var(--cyan); font-weight: 700; }
 }
 
 .foot h2 {
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--amber);
@@ -1040,107 +1040,108 @@ html[data-motion="off"] .scene__dust { display: none; }
 
 /* ============================================================================
    THE WELCOMING PARTY
-   Sleepy machines along the bottom of the last screen. They are asleep until
-   you actually reach the end of the page, and then they get up and cheer.
+   A yard at the very bottom of the page. The machines are asleep on the floor
+   until somebody actually reaches the end, and then they get up and wander
+   about, hopping, turning round at the walls and cheering.
    ========================================================================= */
 
 .party {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: center;
-  gap: var(--s5);
-  min-height: 120px;
-  padding: var(--s6) var(--s4) var(--s5);
+  height: 190px;
+  margin-top: var(--s6);
+  overflow: hidden;
+
+  /* the floor they walk on */
+  background:
+    repeating-linear-gradient(to right,
+      var(--edge-dim) 0 var(--px),
+      transparent var(--px) calc(var(--px) * 4))
+    bottom / 100% var(--px) no-repeat;
 }
 
 .party__one {
-  position: relative;
+  position: absolute;
+  bottom: var(--px);
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--s2);
-  transform: translateY(0);
+  gap: var(--s1);
+  will-change: transform;
 }
 
-/* Asleep: slumped, dim, with a Z drifting up. */
-.party__one .sprite { filter: grayscale(0.65) brightness(0.55); }
+/* Asleep: slumped and colourless, with a Z drifting off. */
+.party__one .sprite { filter: grayscale(0.7) brightness(0.5); }
+.party.is-awake .party__one .sprite { filter: none; }
 
 .party__z {
   position: absolute;
-  top: -18px;
-  right: -6px;
-  font-size: 13px;
+  top: -20px;
+  right: -8px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-dim);
   opacity: 0;
   animation: snooze 3.4s ease-in-out infinite;
 }
 
-.party__one:nth-child(2) .party__z { animation-delay: 0.6s; }
-.party__one:nth-child(3) .party__z { animation-delay: 1.2s; }
-.party__one:nth-child(4) .party__z { animation-delay: 1.8s; }
-.party__one:nth-child(5) .party__z { animation-delay: 2.4s; }
-.party__one:nth-child(6) .party__z { animation-delay: 3.0s; }
+.party__one:nth-child(2) .party__z  { animation-delay: 0.4s; }
+.party__one:nth-child(3) .party__z  { animation-delay: 0.8s; }
+.party__one:nth-child(4) .party__z  { animation-delay: 1.2s; }
+.party__one:nth-child(5) .party__z  { animation-delay: 1.6s; }
+.party__one:nth-child(6) .party__z  { animation-delay: 2.0s; }
+.party__one:nth-child(7) .party__z  { animation-delay: 2.4s; }
+.party__one:nth-child(8) .party__z  { animation-delay: 2.8s; }
+.party__one:nth-child(9) .party__z  { animation-delay: 3.2s; }
+.party__one:nth-child(10) .party__z { animation-delay: 3.6s; }
+.party__one:nth-child(11) .party__z { animation-delay: 4.0s; }
 
 @keyframes snooze {
   0%   { opacity: 0; transform: translate(0, 0); }
   30%  { opacity: 0.9; }
-  100% { opacity: 0; transform: translate(8px, -18px); }
+  100% { opacity: 0; transform: translate(9px, -20px); }
 }
+
+.party.is-awake .party__z { animation: none; opacity: 0; }
 
 .party__cheer {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--lime);
+  white-space: nowrap;
   opacity: 0;
-  transition: opacity 160ms steps(2);
+  transition: opacity 200ms steps(2);
 }
 
-/* Awake: colour back, hopping, and the cheer appears. */
-.party.is-awake .party__one .sprite {
-  filter: none;
-  animation: hop 620ms steps(2) infinite;
-}
-
-.party.is-awake .party__z { animation: none; opacity: 0; }
-.party.is-awake .party__cheer { opacity: 1; }
-
-.party.is-awake .party__one:nth-child(2) .sprite { animation-delay: 80ms; }
-.party.is-awake .party__one:nth-child(3) .sprite { animation-delay: 160ms; }
-.party.is-awake .party__one:nth-child(4) .sprite { animation-delay: 240ms; }
-.party.is-awake .party__one:nth-child(5) .sprite { animation-delay: 320ms; }
-.party.is-awake .party__one:nth-child(6) .sprite { animation-delay: 400ms; }
-
-@keyframes hop {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
-}
+/* Opacity is driven per walker from JS, so a cheer appears only while that
+   machine is in the air. The rule below is the asleep state. */
+.party__cheer { opacity: 0; }
 
 .party__caption {
-  flex: 1 0 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--s4);
   text-align: center;
-  margin-top: var(--s4);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-dim);
   opacity: 0;
   transition: opacity 200ms steps(2);
+  pointer-events: none;
 }
+
 .party.is-awake .party__caption { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .party__z { animation: none; opacity: 0; }
-  .party.is-awake .party__one .sprite { animation: none; }
 }
 
 html[data-motion="off"] .party__z { animation: none; opacity: 0; }
-html[data-motion="off"] .party.is-awake .party__one .sprite { animation: none; }
 
 /* ============================================================================
    THE ROPE
@@ -1235,7 +1236,7 @@ html[data-theme="light"] ::-webkit-scrollbar-track {
 
 .foot__note { opacity: 0.85; }
 
-.foot ul { font-size: 14px; }
+.foot ul { font-size: 15px; }
 .foot .stack > * + * { margin-top: var(--s2); }
 
 /* ============================================================================
@@ -1294,6 +1295,7 @@ html[data-theme="light"] ::-webkit-scrollbar-track {
     var(--px) 0 0 var(--edge);
 }
 
+.asst__flag { font-size: 14px; }
 .asst__flag:hover { background: var(--panel-hi); }
 .asst__flag:active { transform: translateY(2px); }
 
@@ -1611,7 +1613,7 @@ html[data-motion="off"] .cord.is-swinging { animation: none; }
 }
 
 .totop__label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1624,11 +1626,3 @@ html[data-motion="off"] .cord.is-swinging { animation: none; }
   .totop { left: var(--s3); bottom: 88px; }
 }
 
-/* ============================================================================
-   The party grew, and its members are not all the same size
-   ========================================================================= */
-
-.party { align-items: flex-end; gap: var(--s4) var(--s5); }
-
-.party__one--sm .sprite { opacity: 0.9; }
-.party__one--lg { margin-bottom: -4px; }

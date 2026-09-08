@@ -187,10 +187,11 @@
     party.className = 'party';
     party.id = 'party';
 
+    var walkers = [];
+
     for (var i = 0; i < PARTY.length; i++) {
       var one = doc.createElement('div');
-      one.className = 'party__one' +
-        (PARTY[i].size ? ' party__one--' + PARTY[i].size : '');
+      one.className = 'party__one';
 
       var z = doc.createElement('span');
       z.className = 'party__z';
@@ -210,6 +211,24 @@
       one.appendChild(host);
       one.appendChild(cheer);
       party.appendChild(one);
+
+      /* Each one gets its own pace, its own hop, and its own starting spot,
+       * so the yard never looks like a marching band. */
+      walkers.push({
+        el: one,
+        sprite: host,
+        cheer: cheer,
+        facing: 1,
+        cheering: null,
+        x: 0,
+        slot: i / PARTY.length,          /* where it starts, as a fraction   */
+        dir: i % 2 ? -1 : 1,
+        speed: 14 + (i % 5) * 7,         /* px per second                    */
+        hopEvery: 1.6 + (i % 4) * 0.55,  /* seconds between hops             */
+        hopHeight: 8 + (i % 3) * 6,
+        hopPhase: (i * 0.37) % 1,
+        wide: 0
+      });
     }
 
     var caption = doc.createElement('p');
@@ -217,7 +236,87 @@
     caption.textContent = 'You read the whole thing. The workshop appreciates it.';
     party.appendChild(caption);
 
+    party.__walkers = walkers;
     return party;
+  }
+
+  /* The yard. Everyone walks, turns round at the walls, and hops on their own
+   * beat. Nothing is fixed in place. */
+  function roam(party) {
+    var walkers = party.__walkers;
+    if (!walkers || !walkers.length) return;
+
+    function measure() {
+      var w = party.clientWidth;
+
+      for (var i = 0; i < walkers.length; i++) {
+        var k = walkers[i];
+        k.wide = k.el.offsetWidth;
+        k.span = Math.max(40, w - k.wide);
+
+        /* Only place them the first time; a resize should not teleport
+         * anybody back to the start. */
+        if (k.x === 0) k.x = k.slot * k.span;
+        if (k.x > k.span) k.x = k.span;
+      }
+    }
+
+    measure();
+
+    var t = null;
+    global.addEventListener('resize', function () {
+      if (t) global.clearTimeout(t);
+      t = global.setTimeout(measure, 150);
+    }, { passive: true });
+
+    global.Pixel.ticker.add(function (dt, now) {
+      var awake = party.classList.contains('is-awake');
+      var moving = awake && global.Pixel.motionOn();
+
+      for (var i = 0; i < walkers.length; i++) {
+        var k = walkers[i];
+        if (!k.span) continue;
+
+        var lift = 0;
+
+        if (moving) {
+          k.x += k.dir * k.speed * dt;
+
+          /* Turn round at the walls rather than walking through them. */
+          if (k.x <= 0) { k.x = 0; k.dir = 1; }
+          if (k.x >= k.span) { k.x = k.span; k.dir = -1; }
+
+          /* A hop is a half sine over the back third of each cycle, so they
+           * spend most of the time walking and only some of it in the air. */
+          var cycle = ((now / 1000) / k.hopEvery + k.hopPhase) % 1;
+          if (cycle > 0.66) {
+            lift = Math.sin((cycle - 0.66) / 0.34 * Math.PI) * k.hopHeight;
+          }
+        } else {
+          /* Asleep: parked where they are, sitting on the floor. */
+          k.x = k.x || k.slot * k.span;
+        }
+
+        /* The wrapper carries the position. Only the sprite is flipped —
+         * mirroring the whole thing would write the cheer backwards. */
+        k.el.style.transform =
+          'translate3d(' + Math.round(k.x / 2) * 2 + 'px,' +
+          (-Math.round(lift / 2) * 2) + 'px,0)';
+
+        if (k.facing !== k.dir) {
+          k.facing = k.dir;
+          k.sprite.style.transform = k.dir < 0 ? 'scaleX(-1)' : '';
+        }
+
+        /* The cheer only shows while its owner is off the ground, so eleven
+         * labels never sit on top of each other along one line. */
+        var cheering = lift > 1;
+        if (k.cheering !== cheering) {
+          k.cheering = cheering;
+          k.cheer.style.opacity = cheering ? '1' : '0';
+        }
+      }
+    });
   }
 
   function wakeTheParty(party) {
@@ -231,7 +330,7 @@
 
       for (var i = 0; i < kids.length; i++) {
         var k = kids[i].getBoundingClientRect();
-        global.Pixel.burst(k.left + k.width / 2, k.top + k.height / 2, 14);
+        global.Pixel.burst(k.left + k.width / 2, k.top + k.height / 2, 12);
       }
     }
   }
@@ -289,6 +388,9 @@
     } else {
       wakeTheParty(party);
     }
+
+    /* --- the yard walks --- */
+    if (global.Pixel) roam(party);
 
     /* --- parallax + the animation subscriptions --- */
     var dust = new Dust(dustCanvas);

@@ -13,11 +13,11 @@ one robot per team, and a scored run at the end of every term.
 
 ## 2. Live link
 
-`PASTE THE VERCEL URL HERE`
+https://smart1po.github.io/circuit-robotics-academy/
 
 ## 3. GitHub link
 
-`PASTE THE GITHUB URL HERE`
+https://github.com/Smart1po/circuit-robotics-academy
 
 ---
 

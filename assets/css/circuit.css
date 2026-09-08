@@ -984,7 +984,7 @@ html[data-theme="light"] .cord__bulb {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cord__wire { transition: none; }
+  html:not([data-motion]) .cord__wire { transition: none; }
 }
 
 /* ============================================================================
@@ -1138,7 +1138,7 @@ html[data-motion="off"] .scene__dust { display: none; }
 .party.is-awake .party__caption { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .party__z { animation: none; opacity: 0; }
+  html:not([data-motion]) .party__z { animation: none; opacity: 0; }
 }
 
 html[data-motion="off"] .party__z { animation: none; opacity: 0; }
@@ -1484,7 +1484,7 @@ html[data-theme="light"] ::-webkit-scrollbar-track {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mark__wing.is-flexing { animation: none; }
+  html:not([data-motion]) .mark__wing.is-flexing { animation: none; }
 }
 html[data-motion="off"] .mark__wing.is-flexing { animation: none; }
 
@@ -1509,7 +1509,7 @@ html[data-motion="off"] .mark__wing.is-flexing { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cord.is-swinging { animation: none; }
+  html:not([data-motion]) .cord.is-swinging { animation: none; }
 }
 html[data-motion="off"] .cord.is-swinging { animation: none; }
 
@@ -1569,7 +1569,7 @@ html[data-motion="off"] .cord.is-swinging { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .veil { display: none; }
+  html:not([data-motion]) .veil { display: none; }
 }
 
 /* ============================================================================
@@ -1712,8 +1712,8 @@ html[data-motion="off"] .cord.is-swinging { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flash { display: none; }
-  .cord.is-swinging .cord__bulb { animation: none; }
+  html:not([data-motion]) .flash { display: none; }
+  html:not([data-motion]) .cord.is-swinging .cord__bulb { animation: none; }
 }
 
 html[data-motion="off"] .flash { display: none; }

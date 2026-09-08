@@ -98,7 +98,38 @@ stops being believable. Rewrote the note to list every move.
 
 ---
 
-## 6. Score off the ship board
+## 6. The deploy that went green and still shipped a broken page
+
+The Pages build succeeded. Three runs, all green, site live. And the 404 page was broken.
+
+It **loaded** — right title, right words — so nothing on the page itself looked wrong. But every
+stylesheet, every script and every link on it came back `404` from the server:
+
+```
+assets/css/circuit.css   ->  /assets/css/circuit.css        404
+assets/js/app.js         ->  /assets/js/app.js              404
+favicon.svg              ->  /favicon.svg                   404
+```
+
+The paths were absolute. `/assets/css/circuit.css` resolves to
+`smart1po.github.io/assets/css/circuit.css` — the top of the domain — and this site does not live
+at the top of the domain. It lives at `/circuit-robotics-academy/`.
+
+**Why it never showed up locally.** The dev server served the project *at the root*, so `/assets/…`
+was correct there. The same line was right on my machine and wrong the second it was deployed.
+That is the recipe-in-someone-else's-kitchen problem exactly, and no build log would ever have
+caught it, because the build did not fail. I found it by asking the live server for each file the
+page requests and reading the status codes it sent back.
+
+**The fix.** Paths are relative now, so they resolve against the project root wherever it is
+served from — 21 requests, all `200`. The page also carries a few of its own styles inline,
+because a 404 page is the one page that has to stay readable when the stylesheet is the thing
+that has gone missing. And `.nojekyll`, because Pages runs the site through Jekyll otherwise,
+which nothing here needs and which silently drops any file whose name starts with `_`.
+
+---
+
+## 7. Score off the ship board
 
 | Milestone | Points |
 |---|---|
@@ -108,13 +139,19 @@ stops being believable. Rewrote the note to list every move.
 | Claude in Chrome put it on GitHub | 150 |
 | Site is live at a real address | 200 |
 | Caught something Claude invented | 100 |
-| **Total** | **850** |
+| **Subtotal** | **850** |
 
-Not claimed: the failed-build 50 (the build did not fail), and the unstuck-somebody 100.
+**The 50 — "a build failed and you read the log and fixed it."** No build of mine failed; all
+three Pages runs went green. What I am putting forward instead is section 6: a deploy that
+reported success and shipped a page whose every asset 404'd, found by reading the live server's
+own responses rather than a log. Same lesson, harder to spot, because nothing anywhere said it
+was broken. Yours to judge.
+
+**The 100 — "you unstuck somebody else in the room."** Earned in the room, not at the keyboard.
 
 ---
 
-## 7. What is actually in it
+## 8. What is actually in it
 
 Four screens, as specified: `/` public home, `/login`, `/dashboard` which greets you by the
 name derived from the email you typed, and `/members` with the timetable, the kit library and
@@ -153,7 +190,7 @@ for anyone whose system asks for reduced motion.
 
 ---
 
-## 8. The thing this version cannot do
+## 9. The thing this version cannot do
 
 Sign in, then close the tab and open it again. The account is gone, and the members area sends
 you back to the login screen.

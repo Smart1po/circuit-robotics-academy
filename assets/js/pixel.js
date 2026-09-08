@@ -195,7 +195,25 @@
         continue;
       }
 
-      p.vy += GRAVITY * dt;
+      if (p.tx === undefined) {
+        p.vy += GRAVITY * dt;
+      } else {
+        /* Being pulled somewhere. Accelerate toward the target and speed up
+         * as it gets closer, so the last stretch snaps rather than drifts. */
+        var dx = p.tx - p.x;
+        var dy = p.ty - p.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+        var pull = 2600 / Math.max(dist, 40);
+        p.vx += (dx / dist) * pull * dt * 8;
+        p.vy += (dy / dist) * pull * dt * 8;
+
+        if (dist < 14) {
+          this.particles.splice(i, 1);
+          continue;
+        }
+      }
+
       p.x += p.vx * dt;
       p.y += p.vy * dt;
 
@@ -393,6 +411,34 @@
     glitter.spawn(x, y, Math.min(count || 10, 30));
   }
 
+  /* Scatter sparks across the whole window and drag them all into one point.
+   * Used when the lights go out: the cord swallows the light on the page. */
+  function implode(tx, ty, count) {
+    if (!glitter || !motionOn) return;
+
+    var n = Math.min(count || 70, 140);
+
+    for (var i = 0; i < n; i++) {
+      if (glitter.particles.length >= MAX) glitter.particles.shift();
+
+      var x = Math.random() * global.innerWidth;
+      var y = Math.random() * global.innerHeight;
+
+      glitter.particles.push({
+        x: x,
+        y: y,
+        vx: 0,
+        vy: 0,
+        tx: tx,
+        ty: ty,
+        life: 1.4,
+        age: 0,
+        size: Math.random() < 0.3 ? GRID * 2 : GRID,
+        color: glitter.colors[(Math.random() * glitter.colors.length) | 0]
+      });
+    }
+  }
+
   function repaint() {
     for (var i = 0; i < mounted.length; i++) mounted[i].draw();
   }
@@ -422,6 +468,7 @@
     mountAll: mountAll,
     startGlitter: startGlitter,
     burst: burst,
+    implode: implode,
     repaint: repaint,
     remount: remount,
     setMotion: setMotion,

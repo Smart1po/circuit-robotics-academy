@@ -93,9 +93,19 @@
     btn.addEventListener('click', function () {
       var next = current() === 'light' ? 'dark' : 'light';
 
+      /* Where the bulb is, right now, in the window. The light goes into it
+       * or comes out of it, so everything is measured from there. */
+      var b = bulb.getBoundingClientRect();
+      var fx = b.left + b.width / 2;
+      var fy = b.top + b.height / 2;
+
+      var wasLight = current() === 'light';
+
       apply(next);
       save(next);
       paint();
+
+      sweep(fx, fy, wasLight);
 
       /* The chain gives, then springs back, and the whole thing swings. */
       btn.classList.add('is-pulled');
@@ -126,6 +136,47 @@
     }
 
     paintWing(current());
+  }
+
+  /* ------------------------------------------------------------------ *
+   * The light going in, and coming back out
+   *
+   * Turning the lights off does not just repaint the page. A sheet of the
+   * old, lit colour is left lying over the top and then collapsed into the
+   * bulb, so the light looks like it is being pulled up the cord — and every
+   * spark on the page is dragged in after it. Turning them on runs the same
+   * thing backwards, out of the bulb.
+   * ------------------------------------------------------------------ */
+  var flash = null;
+  var flashTimer = null;
+
+  function sweep(fx, fy, goingDark) {
+    if (doc.documentElement.getAttribute('data-motion') === 'off') return;
+
+    if (!flash) {
+      flash = doc.createElement('div');
+      flash.className = 'flash';
+      flash.setAttribute('aria-hidden', 'true');
+      doc.body.appendChild(flash);
+    }
+
+    /* The sheet is always the LIT colour: it is the light itself, either
+     * being swallowed or being thrown back out. */
+    flash.style.setProperty('--fx', fx + 'px');
+    flash.style.setProperty('--fy', fy + 'px');
+
+    flash.classList.remove('is-suck', 'is-burst');
+    void flash.offsetWidth;
+    flash.classList.add(goingDark ? 'is-suck' : 'is-burst');
+
+    if (goingDark && global.Pixel && global.Pixel.implode) {
+      global.Pixel.implode(fx, fy, 90);
+    }
+
+    if (flashTimer) global.clearTimeout(flashTimer);
+    flashTimer = global.setTimeout(function () {
+      flash.classList.remove('is-suck', 'is-burst');
+    }, 900);
   }
 
   var swingTimer = null;

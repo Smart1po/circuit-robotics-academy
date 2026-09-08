@@ -1662,3 +1662,71 @@ html[data-motion="off"] .cord.is-swinging { animation: none; }
   .asst.is-min { left: auto; }
   .asst.is-min .asst__flag { width: 44px; margin-left: auto; }
 }
+
+/* ============================================================================
+   THE LIGHT GOING IN
+   A sheet of the lit colour laid over the page and then collapsed into the
+   bulb on the end of the cord, so switching to dark looks like the cord
+   swallowing the light rather than the page simply repainting. Switching back
+   throws it out of the bulb again.
+   ========================================================================= */
+
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  background: #E9E6F5;        /* the lit ground — this IS the light */
+  clip-path: circle(0% at var(--fx, 100%) var(--fy, 0));
+  opacity: 0;
+}
+
+/* Steps, not a glide: this site does everything in whole pixels. */
+.flash.is-suck {
+  animation: light-in 700ms steps(14) forwards;
+}
+
+.flash.is-burst {
+  animation: light-out 560ms steps(11) forwards;
+}
+
+@keyframes light-in {
+  0%   { opacity: 1; clip-path: circle(150% at var(--fx) var(--fy)); }
+  92%  { opacity: 1; clip-path: circle(2%   at var(--fx) var(--fy)); }
+  100% { opacity: 0; clip-path: circle(0%   at var(--fx) var(--fy)); }
+}
+
+@keyframes light-out {
+  0%   { opacity: 1; clip-path: circle(0%   at var(--fx) var(--fy)); }
+  70%  { opacity: 1; clip-path: circle(150% at var(--fx) var(--fy)); }
+  100% { opacity: 0; clip-path: circle(150% at var(--fx) var(--fy)); }
+}
+
+/* The bulb flares as it swallows the light, then goes cold. */
+.cord.is-swinging .cord__bulb { animation: bulb-gulp 700ms steps(6); }
+
+@keyframes bulb-gulp {
+  0%   { box-shadow: 0 4px 0 currentColor; }
+  30%  { box-shadow: 0 4px 0 var(--amber), 0 0 0 6px rgba(255,194,71,0.45), 0 0 30px 10px rgba(255,194,71,0.5); }
+  100% { box-shadow: 0 4px 0 currentColor; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash { display: none; }
+  .cord.is-swinging .cord__bulb { animation: none; }
+}
+
+html[data-motion="off"] .flash { display: none; }
+html[data-motion="off"] .cord.is-swinging .cord__bulb { animation: none; }
+
+/* A wider, slower swing — it should read as a real chain, not a twitch. */
+@keyframes sway {
+  0%   { transform: rotate(0deg); }
+  12%  { transform: rotate(11deg); }
+  30%  { transform: rotate(-8deg); }
+  48%  { transform: rotate(5.5deg); }
+  64%  { transform: rotate(-3.5deg); }
+  80%  { transform: rotate(2deg); }
+  92%  { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}

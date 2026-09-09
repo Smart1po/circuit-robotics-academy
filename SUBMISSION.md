@@ -52,13 +52,20 @@ real, registered domain — putting it in front of thirty people as a throwaway 
 mail and traffic at a stranger. Replaced with `you@example.com`. IANA reserves `example.com`
 for exactly this and it can never route anywhere.
 
-**3. `autocomplete="current-password"` on the password field.**
+**3. A contact address that belonged to somebody else.**
+The obvious-looking `circuit.com` is a registered domain owned by a real company — putting it in
+the footer would have sent every message meant for us into a stranger's inbox, which is the same
+mistake as `demo@demo.com` in a smarter disguise. The address in the footer now is
+`hello@circuitacademy.kw`, checked with a DNS lookup first: no nameservers, no MX record,
+*Non-existent domain*. It reads like a real Kuwaiti academy and reaches nobody at all.
+
+**4. `autocomplete="current-password"` on the password field.**
 That attribute is the specific signal a browser and a password manager use to decide a form is
 a real sign-in, and to offer a **saved, real** credential for it. On a sign-in that checks
 nothing, that is inviting the exact mistake the page warns against two lines above. Changed to
 `autocomplete="off"`.
 
-**4. A route by which an email and a password could have reached the URL bar.**
+**5. A route by which an email and a password could have reached the URL bar.**
 The form has no `action`, so its default target is the page itself. If JavaScript ever failed,
 the browser would submit it — and a `GET` would have put `?email=…&password=…` straight into
 the address bar, into browser history, and into any server log along the way. Three things now
@@ -77,7 +84,7 @@ wherever the site is hosted. `frame-ancestors` cannot be set from a meta tag and
 | Item | Where it lives | Verdict |
 |---|---|---|
 | "Kuwait City" | In the page | Safe — the brief's own list puts the city you live in in the window. |
-| `hello@circuit.example` | In the page | Safe — `.example` is a reserved TLD. It cannot route to anyone. |
+| `hello@circuitacademy.kw` | In the page | Safe — checked before using it. `circuitacademy.kw` returns *Non-existent domain*, with no nameservers and no MX record, so mail sent to it is delivered nowhere. It is a display address, not a mailbox. The point is that it belongs to nobody: `circuit.com` would have pointed thirty people's messages at a stranger. |
 | Theme and motion preference | `localStorage` | Safe — two UI switches. Not a person. |
 | The display name for this visit | `sessionStorage` | Derived from what the visitor typed. Gone when the tab closes. |
 | **The typed email address, and the session** | **`localStorage`, only if "Keep me signed in" is ticked** | **Personal data, and treated as such.** It is written only on an explicit tick, never by default; it stays in that one browser on that one device; it is never sent anywhere, because there is nowhere to send it; and either Log out or "Not you? Forget this device" on the sign-in page erases it. |

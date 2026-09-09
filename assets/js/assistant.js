@@ -117,7 +117,7 @@
       id: 'contact',
       chip: 'How do I get in touch?',
       match: ['contact', 'email', 'phone', 'call', 'reach', 'address', 'where are you', 'location'],
-      answer: 'Email is the way: hello@circuit.example. We are in Kuwait City. Term times are on the ' +
+      answer: 'Email is the way: hello@circuitacademy.kw. We are in Kuwait City. Term times are on the ' +
               'timetable in the members area.'
     }
   ];

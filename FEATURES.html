@@ -1,0 +1,597 @@
+<title>Circuit Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ---- tokens: light is the base, both themes redefined below ---------- */
+  :root {
+    --paper:   #F4F3F8;
+    --card:    #FFFFFF;
+    --sunk:    #ECEAF3;
+    --ink:     #14132A;
+    --ink-dim: #55516F;
+    --ink-faint:#807BA0;
+    --rule:    #DCD8EA;
+    --accent:  #0E6E80;
+    --accent-soft: #E2F1F3;
+    --warn:    #9A5B12;
+    --warn-soft:#F8EEDF;
+
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+    --measure: 68ch;
+    --gap: 1.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:   #0E0D1A;
+      --card:    #17162B;
+      --sunk:    #1E1D36;
+      --ink:     #EEECF8;
+      --ink-dim: #A9A4C8;
+      --ink-faint:#7C77A0;
+      --rule:    #2B294A;
+      --accent:  #5FD8E8;
+      --accent-soft: #16303A;
+      --warn:    #E8A65A;
+      --warn-soft:#2E2416;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:   #0E0D1A;
+    --card:    #17162B;
+    --sunk:    #1E1D36;
+    --ink:     #EEECF8;
+    --ink-dim: #A9A4C8;
+    --ink-faint:#7C77A0;
+    --rule:    #2B294A;
+    --accent:  #5FD8E8;
+    --accent-soft: #16303A;
+    --warn:    #E8A65A;
+    --warn-soft:#2E2416;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1120px; margin-inline: auto; padding: 0 1.25rem 5rem; }
+
+  /* ---- masthead -------------------------------------------------------- */
+  .top { padding: 4rem 0 2.5rem; border-bottom: 2px solid var(--ink); }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    max-width: var(--measure);
+    font-size: 1.1rem;
+    color: var(--ink-dim);
+    margin: 0;
+  }
+
+  /* ---- contents -------------------------------------------------------- */
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1.5rem 0 0;
+  }
+
+  .toc a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-dim);
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+  .toc a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---- sections -------------------------------------------------------- */
+  section { padding-top: 3.5rem; }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.35rem;
+  }
+
+  .lede {
+    max-width: var(--measure);
+    color: var(--ink-dim);
+    margin: 0 0 1.75rem;
+    font-size: 0.98rem;
+  }
+
+  .grid { display: grid; gap: var(--gap); }
+  @media (min-width: 780px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+  /* ---- feature card ---------------------------------------------------- */
+  .f {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.4rem;
+  }
+
+  .f__head { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
+
+  .f h3 {
+    font-family: var(--mono);
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .lift {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .lift--drop  { background: var(--accent-soft); color: var(--accent); }
+  .lift--wire  { background: var(--sunk);        color: var(--ink-dim); }
+  .lift--build { background: var(--warn-soft);   color: var(--warn); }
+
+  .f p { margin: 0; font-size: 0.95rem; }
+  .f p.how { color: var(--ink-dim); }
+
+  .files {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--rule);
+    padding-top: 0.6rem;
+    margin-top: auto;
+    overflow-x: auto;
+  }
+
+  .gotcha {
+    display: flex;
+    gap: 0.55rem;
+    background: var(--warn-soft);
+    border-left: 3px solid var(--warn);
+    padding: 0.6rem 0.75rem;
+    font-size: 0.88rem;
+    color: var(--ink);
+    border-radius: 0 2px 2px 0;
+  }
+  .gotcha b {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warn);
+    flex: 0 0 auto;
+    padding-top: 0.15rem;
+  }
+
+  /* ---- code ------------------------------------------------------------ */
+  pre {
+    background: var(--sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  code { font-family: var(--mono); font-size: 0.88em; }
+  p code, li code, td code { background: var(--sunk); padding: 0.1em 0.35em; border-radius: 2px; }
+
+  .full { grid-column: 1 / -1; }
+
+  /* ---- table ----------------------------------------------------------- */
+  .tw { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 480px; }
+  th, td { text-align: left; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+  th {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    background: var(--sunk);
+  }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; }
+
+  .foot {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--ink);
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+    max-width: var(--measure);
+  }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .f { transition: border-color 140ms ease; }
+    .f:hover { border-color: var(--accent); }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <p class="kicker">Portable build notes</p>
+    <h1>Circuit Field Manual</h1>
+    <p class="standfirst">
+      Every feature on the CIRCUIT site — what it is, how it works, which files
+      carry it, and the thing that will bite you when you rebuild it somewhere
+      else. Nothing here needs a framework, a build step or a network request.
+    </p>
+
+    <nav class="toc">
+      <a href="#spine">The spine</a>
+      <a href="#identity">Identity</a>
+      <a href="#world">The world</a>
+      <a href="#controls">Controls</a>
+      <a href="#waiting">Waiting &amp; travel</a>
+      <a href="#reading">Reading</a>
+      <a href="#characters">Characters</a>
+      <a href="#data">Accounts &amp; data</a>
+      <a href="#order">Load order</a>
+    </nav>
+  </header>
+
+  <!-- ============================================================ -->
+  <section id="spine">
+    <h2>The spine</h2>
+    <p class="lede">
+      Three decisions everything else hangs off. Get these wrong and the rest
+      fights you.
+    </p>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>One animation loop</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Every moving thing subscribes to a single <code>requestAnimationFrame</code> loop instead of starting its own. Glitter, sprites, dust, flyers, the roaming crowd, parallax — all one frame.</p>
+        <p class="how">Subscribers are functions taking <code>(dt, now)</code>. The loop stops rescheduling when nobody is subscribed, and pauses on <code>visibilitychange</code>.</p>
+        <div class="gotcha"><b>Bites</b><span>Never read layout (<code>clientWidth</code>, <code>offsetWidth</code>, <code>getBoundingClientRect</code>) inside the loop. Measure once, cache it, re-measure on resize. Reading layout 60×/second is the difference between smooth and juddering.</span></div>
+        <p class="files">pixel.js → <code>Ticker</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>The motion switch</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>One switch controls every animation on the site, and the visitor can move it in both directions.</p>
+        <p class="how">JavaScript writes <code>data-motion="on|off"</code> on <code>&lt;html&gt;</code>, seeded from the OS preference and then from the visitor's stored choice. Every animation asks that attribute, never the media query.</p>
+        <div class="gotcha"><b>Bites</b><span>Scope every reduced-motion rule to <code>html:not([data-motion])</code> — the no-JavaScript fallback. A bare <code>@media (prefers-reduced-motion)</code> rule silently overrides a visitor who deliberately turned motion back on. This cost us six features that were built and invisible.</span></div>
+        <p class="files">app.js → <code>initMotionToggle</code> · CSS at the bottom</p>
+      </article>
+
+      <article class="f full">
+        <div class="f__head"><h3>Content is never hidden by decoration</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Any effect that hides something must be armed by JavaScript <em>after</em> it has already revealed whatever is on screen — and needs a timer as a backstop.</p>
+<pre>/* CSS: hiding only applies once JS has armed it */
+html.reveal-armed [data-reveal]        { opacity: 0; transform: translateY(14px); }
+html.reveal-armed [data-reveal].is-in  { opacity: 1; transform: none; }</pre>
+        <p class="how">JS reveals everything currently in the viewport, <em>then</em> adds <code>reveal-armed</code>, then observes the rest. A 1.2s timer catches anything the observer misses. No script, no observer, no problem — the page is simply visible.</p>
+        <div class="gotcha"><b>Bites</b><span>The naive version leaves a block permanently invisible if the observer never fires for it. Text that never appears is far worse than a missing animation.</span></div>
+        <p class="files">app.js → <code>initReveal</code></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="identity">
+    <h2>Identity</h2>
+    <p class="lede">No image files anywhere on the site. Both of these are text expanded into pixels at runtime.</p>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>Bitmap typeface</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>A 5×7 typeface written by hand — seven rows of five characters per glyph — turned into SVG rectangles at runtime.</p>
+<pre>'A': '.###.|#...#|#...#|#####|#...#|#...#|#...#'</pre>
+        <p class="how">Runs of lit pixels merge into single rects (a headline drops from ~600 to ~200). The scale is always a whole number computed from the container width, so pixels never land on half-device-pixels.</p>
+        <div class="gotcha"><b>Bites</b><span>Keep the real sentence in the DOM as visually-hidden text and mark the SVG <code>aria-hidden</code>. Otherwise the heading is invisible to screen readers and to anyone whose JS never arrives.</span></div>
+        <p class="files">pixfont.js · <code>&lt;h1 class="px" data-px="LINE ONE|LINE TWO"&gt;</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>The mark, shining</h3><span class="lift lift--build">Rebuild</span></div>
+        <p>A pair of wings that spread when the lights are on and fold when they're off, shining three ways at once.</p>
+        <p class="how">A CSS halo that breathes behind it; four twinkle points on staggered delays; and a <em>nova</em> drawn into the sprite itself — a ring of white expanding through every feather across eleven frames.</p>
+        <div class="gotcha"><b>Bites</b><span>A gradient painted into artwork looks flat. Light <em>travelling across</em> a surface is what reads as depth — animate the light, don't bake it.</span></div>
+        <p class="files">sprites.js → wing frames · CSS <code>.mark</code></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="world">
+    <h2>The world</h2>
+    <p class="lede">Ambient life. All of it sits behind opaque content panels, so none of it can ever reduce the contrast of a word.</p>
+
+    <div class="grid">
+      <article class="f full">
+        <div class="f__head"><h3>Sprite engine</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Every character is a text pixel map. One letter is one pixel, a dot is transparent, and a palette maps letters to colours.</p>
+<pre>var BOLT_A = [
+  '..oooooooooooo..',
+  '..obccbbbbccbo..',   //  o outline   b body
+  '.otttttttttttto.',   //  c sensor    t tread
+];
+{ frames: [BOLT_A, BOLT_B], palette: P, fps: 5, scale: 3 }</pre>
+        <p class="how">Expanded onto a small canvas with <code>imageSmoothingEnabled = false</code>. Frames advance on the shared ticker; an <code>IntersectionObserver</code> stops off-screen sprites costing anything. Mount by putting <code>data-sprite="bolt"</code> on any element.</p>
+        <div class="gotcha"><b>Bites</b><span>Validate that every frame is rectangular and every character exists in the palette — a one-character typo in a 20-row map is invisible until it renders wrong. A ten-line Node script catches it before the browser does.</span></div>
+        <p class="files">pixel.js → <code>Sprite</code>, <code>mountAll</code> · sprites.js → the cast</p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Cursor glitter</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Square sparks trailing the pointer, snapped to a 3px grid so they read as pixel art rather than a generic particle blur.</p>
+        <p class="how">Spawning is gated by <em>distance travelled</em>, not by events — a 1000Hz mouse and a 60Hz trackpad give identical density. Hard cap on live particles; a tap burst replaces the trail on touch.</p>
+        <div class="gotcha"><b>Bites</b><span>Skip the <code>clearRect</code> entirely when there are no particles and nothing was drawn last frame. An idle pointer should cost nothing.</span></div>
+        <p class="files">pixel.js → <code>Glitter</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Living background</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>Instead of flat colour: a pixel grid with circuit traces and solder pads, drifting against the scroll, plus a canvas of slow dust motes.</p>
+        <p class="how">The grid is pure CSS gradients on a fixed layer, offset by <code>scrollY × -0.12</code>. Dust borrows the palette from CSS custom properties, so it changes with the theme.</p>
+        <div class="gotcha"><b>Bites</b><span>Turn it right down on pages people actually read. Ours drops to 6% opacity on the dashboard — good to glance at, terrible to read over.</span></div>
+        <p class="files">scene.js → <code>Dust</code> · CSS <code>.scene</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Flyers</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Drones and an ornithopter crossing the window at their own heights, speeds and directions.</p>
+        <p class="how">Absolutely positioned in a fixed layer, moved by <code>translate3d</code> on the shared ticker, flipped with <code>scaleX(-1)</code> when travelling left. Offsets are staggered so they never line up.</p>
+        <p class="files">scene.js → <code>FLYERS</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>The welcoming party</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>Machines asleep at the very bottom of the page. Reach the end and they wake, walk about at their own paces, turn at the walls and hop — every few hops, one clears the top entirely.</p>
+        <p class="how">Placed <em>after</em> the footer, so an <code>IntersectionObserver</code> firing on them genuinely means "reached the end". Each walker carries its own speed, hop rhythm and direction.</p>
+        <div class="gotcha"><b>Bites</b><span>Flip only the sprite, never the wrapper — mirroring the wrapper writes any label backwards. And <code>overflow: visible</code> on the container, or they can't actually escape.</span></div>
+        <p class="files">scene.js → <code>buildParty</code>, <code>roam</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Rope scrollbar</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>The scrollbar as a length of braided rope.</p>
+<pre>::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(to right, #3A2413 0 2px, transparent 2px 16px, #3A2413 16px 18px),
+    repeating-linear-gradient(135deg,
+      #E0A868 0 3px, #C08A4E 3px 6px, #9A6835 6px 9px, #C08A4E 9px 12px);
+}</pre>
+        <p class="how">Diagonal bands make the braid; a dark selvedge down each edge makes it a rope rather than a stripe. <code>scrollbar-color</code> is the Firefox fallback.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="controls">
+    <h2>Controls</h2>
+    <p class="lede">Two switches, made into objects instead of toggles.</p>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>Pull-cord day/night</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>A chain hanging from the top corner with a bulb and a ring. Pull it and the lights change. It swings when you touch it, not only when you pull it.</p>
+        <p class="how">A real <code>&lt;button&gt;</code> with <code>aria-pressed</code> and one constant accessible name — the chain is decoration layered on top. The bulb shows state visually.</p>
+        <div class="gotcha"><b>Bites</b><span>A toggle keeps <em>one</em> name and lets <code>aria-pressed</code> carry the state. Changing the name and the state together announces a contradiction.</span></div>
+        <p class="files">theme.js</p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>The light being swallowed</h3><span class="lift lift--build">Rebuild</span></div>
+        <p>Going dark doesn't repaint — a sheet of the lit colour is left over the page and collapsed into the bulb, with ninety sparks dragged in after it.</p>
+        <p class="how"><code>clip-path: circle()</code> animated from 150% to 0 at the bulb's coordinates, with <code>steps()</code> so it moves in jumps. The particle engine gains an <em>implode</em> mode: sparks accelerate toward a target and snap the last stretch.</p>
+        <p class="files">theme.js → <code>sweep</code> · pixel.js → <code>implode</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Themes that fade</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Colour, background, shadow and border cross-fade over 520ms instead of snapping.</p>
+        <div class="gotcha"><b>Bites</b><span>Two traps. Never transition <code>all</code> — it drags layout and transforms in and everything feels like treacle. And suppress transitions for the first paint or the page cross-fades from the browser default on load; lift that suppression with <code>requestAnimationFrame</code> <em>and</em> a short timer, because rAF never fires in a background tab.</span></div>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Rope back to the top</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Appears after 80% of a viewport of scrolling. Bottom-left, out of the way of anything sitting bottom-right.</p>
+        <p class="how">Moves focus to the skip link as well as scrolling, so a keyboard user actually arrives at the top rather than watching it go past.</p>
+        <p class="files">nav.js → <code>initTop</code></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="waiting">
+    <h2>Waiting &amp; travel</h2>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>The waiting screen</h3><span class="lift lift--build">Rebuild</span></div>
+        <p>Click a link that leaves the page and the mark takes over: the wings, a line worth reading, and one of five scenes at random — rain, snow, a flock crossing, a party, or a big machine drinking tea while building a robot.</p>
+        <p class="how">A delegated click handler decides whether a link genuinely leaves (same origin, no modifier key, not an anchor on this page), calls <code>preventDefault</code>, shows the scene, and navigates on a timer.</p>
+        <div class="gotcha"><b>Bites</b><span>Three things. The navigation must be on a timer that fires no matter what, or a slow scene traps people. Handle <code>pageshow</code> or the Back button returns to a cached page with the veil still up. And if your loader script loads after your mount call, the sprite host is never mounted and your beautiful animation draws nothing.</span></div>
+        <p class="files">nav.js → <code>SCENES</code>, <code>LINES</code></p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>A 404 that survives</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>The one page that has to work when the stylesheet is the thing that's missing. It carries enough of its own styling inline to stay readable with nothing else loaded.</p>
+        <div class="gotcha"><b>Bites</b><span>Its paths must be absolute from the site root. A 404 is served for <em>any</em> missing address at any depth — relative paths resolve against the URL that was asked for, so <code>/a/b/c</code> goes looking for its stylesheet in <code>/a/b/</code>. Ours shipped broken and the build was green.</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="reading">
+    <h2>Reading</h2>
+    <p class="lede">Turning a page of prose into a page of things you press. Same facts, 72% fewer words on screen.</p>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>Pick one, get one</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Four topic tiles with an icon each. Press one and a single panel below updates. Four cards of four paragraphs become four tiles and one answer.</p>
+        <p class="how"><code>role="tablist"</code> with <code>aria-selected</code>, content in a JS array, panel marked <code>aria-live="polite"</code>.</p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Timeline you can scrub</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Twelve coloured boxes, one per week, tinted by stage — so the shape of a term is visible before a word is read. Hover browses; click commits.</p>
+        <div class="gotcha"><b>Bites</b><span>Colour must never be the only channel. Every cell is numbered and its panel names the stage in words.</span></div>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Closed until asked</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Questions as native <code>&lt;details&gt;</code>. Five answers occupy five lines instead of five paragraphs.</p>
+        <p class="how">Zero JavaScript. Keyboard and screen-reader behaviour comes free from the browser. Style <code>summary::before</code> for the +/− and hide the default marker.</p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Numbers that arrive</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Headline figures count up when scrolled into view, once each.</p>
+        <p class="how">Interval timed so every counter finishes in about the same 420ms regardless of its target. Skipped entirely when motion is off.</p>
+        <p class="files">home.js</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="characters">
+    <h2>Characters that do a job</h2>
+    <p class="lede">Both of these carry information. Neither is decoration that wandered in.</p>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>The guard on the door</h3><span class="lift lift--build">Rebuild</span></div>
+        <p>Paces the width of the sign-in panel and turns at each end. Every nine seconds he plants, his eyes go red, a hand comes up, and he says one of six things — each true of that page, including the one about not reusing a password.</p>
+        <p class="how">Two sprite states swapped by remounting the same host. Pacing is a CSS <code>steps()</code> animation; the speech is a bubble with <code>aria-live</code>.</p>
+        <div class="gotcha"><b>Bites</b><span>What he <em>says</em> must ignore the motion switch. The warning is content; only the pacing is motion.</span></div>
+        <p class="files">guard.js</p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Help behind a white flag</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>A corner button that opens a small chat. It answers from a hand-written table of the site's own content — no network, no model, and it says when it doesn't know rather than inventing.</p>
+        <p class="how">Keyword scoring against a list of entries, each with a suggested-question chip. Suggestions rotate to what you haven't asked yet.</p>
+        <div class="gotcha"><b>Bites</b><span>"Hide" should <em>minimise</em>, not disappear. A control someone has to go hunting for in a footer is a control they've lost — ours shrinks to its own icon and stays put.</span></div>
+        <p class="files">assistant.js</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="data">
+    <h2>Accounts &amp; data</h2>
+    <p class="lede">The front-end mockup, then the real thing — and the site tells the truth about which one it currently is.</p>
+
+    <div class="grid">
+      <article class="f">
+        <div class="f__head"><h3>The gate</h3><span class="lift lift--drop">Drop in</span></div>
+        <p>Member pages redirect before a single pixel of member content paints.</p>
+        <p class="how">A blocking script in <code>&lt;head&gt;</code>, before the body is parsed, keyed off <code>data-guard="members"</code> on <code>&lt;html&gt;</code>. Uses <code>location.replace</code> so Back doesn't bounce.</p>
+        <div class="gotcha"><b>Bites</b><span>Fail <em>closed</em>. If the session module didn't load, redirect — "cannot tell" must never mean "come in". And say plainly that a front-end gate is a door, not a lock.</span></div>
+        <p class="files">guard.js (head) · session.js</p>
+      </article>
+
+      <article class="f">
+        <div class="f__head"><h3>Remember me</h3><span class="lift lift--wire">Some wiring</span></div>
+        <p>Opt-in. The session moves to <code>localStorage</code> as well as the tab, and the form fills in the address next time. Never the password.</p>
+        <p class="how">Signing out clears both stores <em>and</em> tells other open tabs via the <code>storage</code> event. Kept sessions expire after 30 days.</p>
+        <div class="gotcha"><b>Bites</b><span>Give people a way out from the page the remembered address appears on — a "Not you?" control. Otherwise the only escape from someone else's session is knowing to find a button inside it.</span></div>
+      </article>
+
+      <article class="f full">
+        <div class="f__head"><h3>A real back end, without an SDK</h3><span class="lift lift--build">Rebuild</span></div>
+        <p>Supabase auth and REST over plain <code>fetch</code>. Pulling a library off a CDN would break both the no-network rule and the CSP.</p>
+<pre>POST /auth/v1/signup                   → create account, password hashed server-side
+POST /auth/v1/token?grant_type=password → sign in
+GET  /auth/v1/user                     → who the server says you are
+POST /rest/v1/members                  → your row, user_id filled by a trigger</pre>
+        <p class="how">Two config values decide everything. Filled in, the site does real accounts; empty, every call reports <code>no-backend</code> and it falls back to the mockup with nothing broken. <strong>The warning on the form rewrites itself</strong> — "do not use a real password" stops being true the moment a server is hashing it.</p>
+        <div class="gotcha"><b>Bites</b><span>Row Level Security is what protects the data, not the key being secret — the publishable key is <em>designed</em> to sit in browser JavaScript. Turn RLS on before anything else, and fill <code>user_id</code> from the token with a trigger rather than trusting whatever the browser sends. The <code>service_role</code> key must never appear in the repository.</span></div>
+        <p class="files">config.js · backend.js · SUPABASE.md (schema + policies)</p>
+      </article>
+
+      <article class="f full">
+        <div class="f__head"><h3>Content Security Policy that's actually in force</h3><span class="lift lift--wire">Some wiring</span></div>
+<pre>default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline';
+script-src 'self'; font-src 'self'; connect-src 'self' https://*.supabase.co;
+form-action 'none'; base-uri 'none'</pre>
+        <div class="gotcha"><b>Bites</b><span>Check it's actually being <em>sent</em>. Ours lived in <code>vercel.json</code> — and GitHub Pages doesn't read that file, so the live site sent no policy at all while the docs claimed it did. A <code>&lt;meta http-equiv&gt;</code> tag works on any host. <code>frame-ancestors</code> can't be set that way and has to stay a real header.</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="order">
+    <h2>Load order</h2>
+    <p class="lede">Order matters more than you'd expect. Two of our bugs were purely this.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>File</th><th>Where</th><th>Why there</th></tr></thead>
+        <tbody>
+          <tr><td>theme.js</td><td><code>&lt;head&gt;</code></td><td>Sets the theme before first paint, or the page flashes the wrong one</td></tr>
+          <tr><td>session.js<br>guard.js</td><td><code>&lt;head&gt;</code></td><td>The gate must run before the body is parsed</td></tr>
+          <tr><td>config.js<br>backend.js</td><td>body, first</td><td>Everything downstream asks whether a back end exists</td></tr>
+          <tr><td>pixfont.js<br>pixel.js<br>sprites.js</td><td>body</td><td>Engines before anything that mounts into them</td></tr>
+          <tr><td>scene.js<br>assistant.js</td><td>body</td><td>Inject their own DOM before <code>mountAll</code> runs</td></tr>
+          <tr><td>app.js</td><td>body</td><td>Calls <code>mountAll</code> and wires the pages</td></tr>
+          <tr><td>nav.js<br>guard.js<br>home.js</td><td>body, last</td><td>Build DOM <em>after</em> <code>mountAll</code> — so they must mount their own sprites</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="foot">
+      <p><strong>The rule that saved the most time:</strong> anything injected into the DOM after the sprite engine's <code>mountAll</code> has run must mount its own sprites. The waiting screen's bird drew nothing at all for a day because the overlay appeared correctly and the sprite inside it had never been mounted — it looked like it worked.</p>
+      <p>Every feature above is plain HTML, CSS and JavaScript. No framework, no build step, no runtime network request except the one to Supabase.</p>
+    </div>
+  </section>
+
+</div>

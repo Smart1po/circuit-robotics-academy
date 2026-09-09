@@ -241,6 +241,12 @@
       } else if (/password/i.test(raw) && /short|least|weak/i.test(raw)) {
         msg = 'That password is too short. Six characters or more.';
 
+      } else if (/signups are disabled|email_provider_disabled/i.test(raw)) {
+        msg = 'Email sign-in is switched off for this project, so nobody can sign up or ' +
+              'log in. In the Supabase dashboard under Authentication → Sign In / Providers, ' +
+              'the Email provider itself needs to be ON — it is the master switch. The ' +
+              'setting to turn off is "Confirm email", which lives inside it.';
+
       } else if (/email address .* invalid|email_address_invalid/i.test(raw)) {
         msg = 'The server will not accept that address. It checks that the domain really ' +
               'exists, so made-up ones like example.com are refused. Use a real address.';

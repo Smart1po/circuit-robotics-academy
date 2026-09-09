@@ -95,6 +95,7 @@ that file, which is why the meta tag exists.
 ## Files
 
 ```
+404.html            any miss     self-contained; styled even with no stylesheet
 index.html          /            home
 login.html          /login       the mockup login
 dashboard.html      /dashboard   gated — greets you by name
@@ -105,8 +106,12 @@ assets/css/circuit.css           tokens, pixel chrome, layout
 assets/js/pixfont.js             the 5x7 bitmap typeface
 assets/js/pixel.js               one animation loop, glitter, sprite engine
 assets/js/sprites.js             the cast, as text pixel maps
-assets/js/session.js             the mock session
+assets/js/session.js             the mock session, and remember-me
 assets/js/guard.js               the members-only gate, runs in <head>
+assets/js/theme.js               the pull cord, the wing, the light swallow
+assets/js/scene.js               background, flyers, the crowd at the bottom
+assets/js/assistant.js           the help flag and its answers
+assets/js/nav.js                 the bird between pages, and back-to-top
 assets/js/app.js                 page wiring
 ```
 
@@ -123,5 +128,7 @@ For clean URLs (`/login` rather than `/login.html`), serve it through anything s
 
 ## Tomorrow
 
-Accounts that survive closing the tab. Same business, same design, same address — one layer
+A real account, on a server, that exists for everyone rather than for one browser. "Keep me
+signed in" makes the forgetting local; it does not make an account — sign in on a phone and this
+laptop still knows nothing about it. Same business, same design, same live address, one layer
 added behind it.

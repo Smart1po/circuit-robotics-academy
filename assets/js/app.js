@@ -213,13 +213,37 @@
     })['catch'](function (err) {
       if (err && err.confirmSent) return confirmSent(email);
 
-      /* Say the useful thing rather than the server's wording. */
-      var msg = err && err.message ? err.message : 'Something went wrong. Try again.';
+      /* Say the useful thing rather than the server's wording. Every one of
+       * these is a message somebody could actually act on; the raw versions
+       * are written for whoever built the server, not for whoever is stuck. */
+      var raw = err && err.message ? err.message : '';
+      var msg = raw || 'Something went wrong. Try again.';
 
-      if (/invalid login credentials/i.test(msg)) {
+      if (/invalid login credentials/i.test(raw)) {
         msg = mode === 'signup'
-          ? 'That address already has an account. Log in instead.'
-          : 'That email and password do not match an account. If you are new, create an account.';
+          ? 'That address already has an account. Switch to Log in.'
+          : 'That email and password do not match an account. If you are new, choose Create account.';
+
+      } else if (/rate limit/i.test(raw)) {
+        msg = 'Too many confirmation emails have gone out from this project in the ' +
+              'last hour, so the server will not send another one yet. Either wait an ' +
+              'hour, or turn off Confirm email in the Supabase dashboard under ' +
+              'Authentication → Sign In / Providers → Email — with it off, no email is ' +
+              'sent at all and this works immediately.';
+
+      } else if (/not confirmed/i.test(raw)) {
+        msg = 'That account exists but has not been confirmed yet. Check your inbox for ' +
+              'the link, or turn off Confirm email in the Supabase dashboard.';
+
+      } else if (/already registered|already exists/i.test(raw)) {
+        msg = 'That address already has an account. Switch to Log in.';
+
+      } else if (/password/i.test(raw) && /short|least|weak/i.test(raw)) {
+        msg = 'That password is too short. Six characters or more.';
+
+      } else if (/email address .* invalid|email_address_invalid/i.test(raw)) {
+        msg = 'The server will not accept that address. It checks that the domain really ' +
+              'exists, so made-up ones like example.com are refused. Use a real address.';
       }
 
       fail(msg);

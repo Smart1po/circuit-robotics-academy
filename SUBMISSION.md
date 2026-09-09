@@ -29,7 +29,7 @@ https://github.com/Smart1po/circuit-robotics-academy
 ## 4. The window check — what I removed, and why
 
 I ran the check on the whole of what was about to be published, not just what shows on the
-screen: four HTML pages, the stylesheet, nine JavaScript files, `vercel.json`, the favicon and
+screen: five HTML pages, the stylesheet, ten JavaScript files, `vercel.json`, the favicon and
 the README.
 
 ### Removed
@@ -65,14 +65,27 @@ the address bar, into browser history, and into any server log along the way. Th
 stop that: `method="post"`, a `form-action 'none'` Content Security Policy, and a submit button
 that ships `disabled` in the HTML and is only enabled by JavaScript that has actually run.
 
+A note on that policy, because it nearly became a false claim. It was written as response
+headers in `vercel.json` — and GitHub Pages does not read `vercel.json` and sends no headers of
+its own, so on the live site there was **no policy at all**. Every page now carries the same
+rules in a `<meta http-equiv="Content-Security-Policy">` tag, which the browser does enforce
+wherever the site is hosted. `frame-ancestors` cannot be set from a meta tag and stays in
+`vercel.json` for the day this moves to Vercel.
+
 ### Checked and deliberately kept
 
-| Item | Verdict |
-|---|---|
-| "Kuwait City" | Safe — the brief's own list puts the city you live in in the window. |
-| `hello@circuit.example` | Safe — `.example` is a reserved TLD. It cannot route to anyone. |
-| `localStorage`: theme + motion preference | Safe — two UI switches. Not a person. |
-| `sessionStorage`: one display name | Safe — tab lifetime only, and derived from what the visitor typed. |
+| Item | Where it lives | Verdict |
+|---|---|---|
+| "Kuwait City" | In the page | Safe — the brief's own list puts the city you live in in the window. |
+| `hello@circuit.example` | In the page | Safe — `.example` is a reserved TLD. It cannot route to anyone. |
+| Theme and motion preference | `localStorage` | Safe — two UI switches. Not a person. |
+| The display name for this visit | `sessionStorage` | Derived from what the visitor typed. Gone when the tab closes. |
+| **The typed email address, and the session** | **`localStorage`, only if "Keep me signed in" is ticked** | **Personal data, and treated as such.** It is written only on an explicit tick, never by default; it stays in that one browser on that one device; it is never sent anywhere, because there is nowhere to send it; and either Log out or "Not you? Forget this device" on the sign-in page erases it. |
+
+That last row is the honest answer to "what changed since I first ran this check". A
+**Keep me signed in** option was added after the first pass, and an email address is a person.
+It is disclosed on the form, it is opt-in, and it is erasable from the page it appears on. What
+matters is that it is written down here rather than quietly left out of the table.
 
 ### Never present in the first place
 
@@ -100,7 +113,7 @@ stops being believable. Rewrote the note to list every move.
 
 ## 6. The deploy that went green and still shipped a broken page
 
-The Pages build succeeded. Three runs, all green, site live. And the 404 page was broken.
+The Pages build succeeded — every run of it, green, site live. And the 404 page was broken.
 
 It **loaded** — right title, right words — so nothing on the page itself looked wrong. But every
 stylesheet, every script and every link on it came back `404` from the server:
@@ -121,8 +134,11 @@ That is the recipe-in-someone-else's-kitchen problem exactly, and no build log w
 caught it, because the build did not fail. I found it by asking the live server for each file the
 page requests and reading the status codes it sent back.
 
-**The fix.** Paths are relative now, so they resolve against the project root wherever it is
-served from — 21 requests, all `200`. The page also carries a few of its own styles inline,
+**The fix.** Paths are relative now, so they resolve against the directory of the URL that was
+asked for — which, for the one-level misses that are essentially all of them, is the project
+root. All 27 of the page's requests come back `200`. A miss two levels deep still loses the
+stylesheet, which is why the page also carries enough of its own styling inline to stay
+readable with nothing else loaded. The page also carries a few of its own styles inline,
 because a 404 page is the one page that has to stay readable when the stylesheet is the thing
 that has gone missing. And `.nojekyll`, because Pages runs the site through Jekyll otherwise,
 which nothing here needs and which silently drops any file whose name starts with `_`.
@@ -161,7 +177,9 @@ content paints.
 
 Plain HTML, CSS and JavaScript. No framework, no build step, and **no network request of any
 kind at runtime** — no CDN, no web font, no analytics. It works offline and from a `file://`
-path. The Content Security Policy enforces it rather than trusting it.
+path. A Content Security Policy in a meta tag on every page enforces that rather than trusting
+it: `connect-src 'none'` means the browser refuses to let the site call out even if a future
+change tried to.
 
 **There is not one image file in the project.** The pixel art is text:
 
@@ -173,16 +191,26 @@ path. The Content Security Policy enforces it rather than trusting it.
   beside rather than scattered as decoration.
 - The cursor leaves a trail of 3px sparks, snapped to a 3px grid, capped and gated by pointer
   distance so a fast sweep leaves an even trail instead of a solid bar.
-- The academy mark is a metal wing. Spread when the lights are on, folded shut when they are
-  off, and it flexes once on the way between the two.
+- The academy mark is a pair of silver wings, drawn rather than typed: five feathers a side,
+  each three rows deep — a lit top edge, a body, and a dark groove separating it from the
+  feather below. Spread when the lights are on, folded shut when they are off, flexing once on
+  the way between. A specular band travels across the metal every few seconds and is gone
+  again, which is the only honest way to make pixels look polished.
 - Clicking a link that leaves the page sends a metal bird across it — wise stare, blue eyes —
   while the next page loads.
-- The scrollbar is a braided rope. The light switch is a pull cord hanging from the top corner
-  that swings when you touch it.
+- The scrollbar is a braided rope. The light switch is a pull cord that swings when you touch
+  it, and turning the lights off collapses a sheet of the lit colour into the bulb while ninety
+  sparks are dragged in after it — the cord swallowing the light rather than the page simply
+  repainting.
 - Eleven machines sleep in a yard at the very bottom of the page. Read all the way down and
   they wake up, walk about at their own paces, turn round at the walls and hop.
 - A help assistant behind a white flag in the corner, answering out of a hand-written table of
-  the site's own content. It can be sent away and brought back from the footer.
+  the site's own content — no network, no model, and it says when it does not know rather than
+  inventing. Minimise shrinks it to its own flag; it never disappears, because a control you
+  have to go hunting for is a control you have lost.
+- **Keep me signed in on this device**, which is the only thing here that outlives the tab. It
+  is opt-in, it stores the address in one browser and never the password, and the sign-in page
+  offers "Not you? Forget this device" to clear it.
 - A rope back to the top, bottom left, out of the assistant's way.
 
 All of it stops. There is a **MOTION** switch in the footer, and the site opens with motion off
@@ -192,12 +220,14 @@ for anyone whose system asks for reduced motion.
 
 ## 9. The thing this version cannot do
 
-Sign in, then close the tab and open it again. The account is gone, and the members area sends
-you back to the login screen.
+Sign in without ticking "Keep me signed in", then close the tab and open it again. The account
+is gone, and the members area sends you back to the sign-in screen.
 
-Nothing is broken. Everything a visitor types lives in the memory of one browser tab and
-nowhere else. If somebody signed in on their phone right now I would never know, because there
-is no shared place for it to be written down.
+Ticking the box papers over that in one browser — but only in that browser, on that device.
+Everything a visitor types still lives on their own machine and nowhere else. If somebody signed
+in on their phone right now I would never know, because there is no shared place for it to be
+written down. The tick makes the forgetting local instead of instant; it does not make an
+account exist.
 
 That shared place is a back end. Tomorrow: same business, same design, same live address, one
 layer added behind it.

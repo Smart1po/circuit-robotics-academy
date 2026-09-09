@@ -1761,3 +1761,34 @@ html[data-motion="off"] .cord.is-swinging .cord__bulb { animation: none; }
   outline: var(--px) solid var(--ring);
   outline-offset: 2px;
 }
+
+/* ============================================================================
+   "Not you?" — the way out of a remembered session from the login page
+   ========================================================================= */
+
+.forget {
+  margin-top: var(--s3);
+  padding: var(--s3);
+  background: var(--void-2);
+  border-left: var(--px) solid var(--edge);
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.forget__btn {
+  display: inline-block;
+  margin-top: var(--s2);
+  padding: var(--s2) var(--s3);
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.forget__btn:hover { color: var(--text); }

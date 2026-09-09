@@ -50,6 +50,11 @@
     veil.appendChild(stage);
     doc.body.appendChild(veil);
 
+    /* This file loads last, so app.js has already run mountAll() by the time
+     * the veil exists — the bird would be an empty host that never draws a
+     * pixel. Mount what is inside it now that it is in the document. */
+    if (global.Pixel && global.Pixel.mountAll) global.Pixel.mountAll(veil);
+
     return veil;
   }
 

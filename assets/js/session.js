@@ -4,13 +4,16 @@
  * This is a front-end mockup. There is no server, no database and no account.
  * Any email and any password get you in, because there is nothing behind the form.
  *
- * What it stores: one display name, derived from the email you typed, in
- * sessionStorage — the memory of this browser tab only.
- * What it never stores: the password. It is read for a non-empty check and
- * never assigned, never logged, never persisted, never sent anywhere.
+ * What it stores: one display name, derived from the email you typed. Always
+ * in sessionStorage, which is the memory of this browser tab. Additionally in
+ * localStorage — along with the address itself, so the form can fill itself in
+ * — but only if the visitor ticked "Keep me signed in on this device".
  *
- * Close the tab and the "account" is gone. That is not a bug. That is what a
- * front end without a back end actually does.
+ * What it never stores, either way: the password. It is read for a non-empty
+ * check and never assigned, never logged, never persisted, never sent.
+ *
+ * Without the tick, closing the tab loses the "account". That is not a bug —
+ * it is what a front end without a back end actually does.
  */
 (function (global) {
   'use strict';
@@ -54,23 +57,50 @@
   }
 
   function read() {
+    var raw = null;
+
+    /* Two independent stores, so two independent try blocks. Sharing one
+     * would mean a browser that blocks localStorage also loses the perfectly
+     * good session sitting in sessionStorage. */
     try {
-      var raw = global.sessionStorage.getItem(KEY);
+      raw = global.sessionStorage.getItem(KEY);
+    } catch (err) {
+      raw = null;
+    }
 
-      /* Nothing in this tab — but the visitor may have asked to be kept
-       * signed in on this device. If so, restore it into the tab. */
-      if (!raw) {
+    var fromKept = false;
+
+    if (!raw) {
+      try {
         raw = global.localStorage.getItem(KEEP);
-        if (raw) global.sessionStorage.setItem(KEY, raw);
+        fromKept = !!raw;
+      } catch (err) {
+        raw = null;
       }
+    }
 
-      if (!raw) return null;
-      var data = JSON.parse(raw);
-      if (!data || typeof data.name !== 'string' || !data.name) return null;
-      return data;
+    if (!raw) return null;
+
+    var data;
+    try {
+      data = JSON.parse(raw);
     } catch (err) {
       return null;
     }
+
+    if (!data || typeof data.name !== 'string' || !data.name) return null;
+
+    /* Only mirror it into the tab once it has been parsed and found sound.
+     * Copying first would spread a corrupt value from one store to the other. */
+    if (fromKept) {
+      try {
+        global.sessionStorage.setItem(KEY, raw);
+      } catch (err) {
+        /* The tab refused it. The value is still valid; use it anyway. */
+      }
+    }
+
+    return data;
   }
 
   /* Returns the session, or null if the browser refused to store it. The
@@ -86,16 +116,20 @@
       return null;
     }
 
+    session.kept = false;
+
     try {
       if (keep) {
         global.localStorage.setItem(KEEP, raw);
         global.localStorage.setItem(EMAIL, String(email));
+        session.kept = true;
       } else {
         global.localStorage.removeItem(KEEP);
         global.localStorage.removeItem(EMAIL);
       }
     } catch (err) {
-      /* Storage refused. The tab session still works for this visit. */
+      /* Storage refused. The visit still works, but "keep me signed in" did
+       * not happen, and session.kept says so rather than pretending. */
     }
 
     return session;
@@ -111,8 +145,9 @@
     try { return !!global.localStorage.getItem(KEEP); } catch (err) { return false; }
   }
 
-  /* Signing out clears both stores. "Keep me signed in" is a convenience,
-   * not a trap: one press of Log out and there is nothing left anywhere. */
+  /* Signing out clears both stores in THIS browser. Another tab that is
+   * already open keeps its own copy in memory until it is reloaded — a
+   * limitation of having no server to tell the other tab anything. */
   function end() {
     try { global.sessionStorage.removeItem(KEY); } catch (err) {}
     try {

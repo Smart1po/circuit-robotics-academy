@@ -155,6 +155,42 @@
     return want.indexOf('.html') > -1 ? want : want + '.html';
   }
 
+  /* An escape hatch on the one page where a remembered address is visible.
+   * A kept session outlives the browser, so there has to be a way to end it
+   * from outside the members area — otherwise the only way out of somebody
+   * else's session is to know to go and find the Log out button inside it. */
+  function showForgetOption(known) {
+    var host = doc.querySelector('.keepme');
+    if (!host || doc.getElementById('forget-me')) return;
+
+    var wrap = doc.createElement('p');
+    wrap.className = 'forget';
+
+    var who = doc.createElement('span');
+    who.textContent = 'Signed in as ' + known + ' on this device.';
+
+    var btn = doc.createElement('button');
+    btn.type = 'button';
+    btn.id = 'forget-me';
+    btn.className = 'forget__btn';
+    btn.textContent = 'Not you? Forget this device';
+
+    btn.addEventListener('click', function () {
+      global.CircuitSession.end();
+
+      var email = doc.getElementById('email');
+      var keep = doc.getElementById('keepme');
+      if (email) { email.value = ''; email.focus(); }
+      if (keep) keep.checked = false;
+
+      wrap.parentNode.removeChild(wrap);
+    });
+
+    wrap.appendChild(who);
+    wrap.appendChild(btn);
+    host.parentNode.insertBefore(wrap, host.nextSibling);
+  }
+
   function initLogin() {
     var form = doc.getElementById('login-form');
     if (!form) return;
@@ -174,11 +210,19 @@
 
     /* Fill the address in from last time, so a member does not retype it on
      * every visit. Only the address: there is no password to remember, and
-     * the box below is deliberately left empty. */
-    var known = global.CircuitSession.rememberedEmail();
+     * the box below is deliberately left empty.
+     *
+     * Guarded, because this runs before the submit button is enabled — an
+     * exception here would leave the form permanently dead. */
+    var known = global.CircuitSession ? global.CircuitSession.rememberedEmail() : '';
+
     if (known && !email.value) {
       email.value = known;
       if (keep) keep.checked = true;
+
+      /* Somebody else's address should not be stuck in the box on a shared
+       * machine with no way to shift it. */
+      showForgetOption(known);
     }
     var summary = doc.getElementById('errsum');
     var list = doc.getElementById('errsum-list');

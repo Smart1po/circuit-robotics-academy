@@ -29,9 +29,11 @@ a shortcut — it is the honest state of a front end with no back end yet.
 
 What it does with what you type:
 
-- **The email** is used to work out a display name (`first.last@example.com` → `First Last`). That
-  name is written to `sessionStorage`, which is the memory of one browser tab. Close the tab
-  and it is gone.
+- **The email** is used to work out a display name (`first.last@example.com` → `First Last`).
+  That name goes to `sessionStorage`, the memory of one browser tab, so closing the tab loses
+  it. Tick **Keep me signed in on this device** and the session and the address are also written
+  to `localStorage` in that one browser — never the password, never anywhere else, and cleared
+  by Log out or by "Not you? Forget this device" on the sign-in page.
 - **The password** is checked for being non-empty and nothing else. It is never assigned to a
   variable, never logged, never stored and never sent anywhere. There is nowhere for it to go.
 
@@ -83,7 +85,10 @@ site opens with motion off for anyone whose system asks for reduced motion.
 ## No network requests, ever
 
 No CDN, no web font, no analytics, no `fetch`. The site works offline, from a `file://` path,
-and on a live host. The Content Security Policy in `vercel.json` enforces it.
+and on a live host. A Content Security Policy in a meta tag on every page enforces it —
+`connect-src 'none'`, so the browser will not let the site call out at all. The same rules are
+in `vercel.json` as response headers for the day this moves to Vercel; GitHub Pages ignores
+that file, which is why the meta tag exists.
 
 ---
 

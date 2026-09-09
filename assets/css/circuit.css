@@ -1049,8 +1049,8 @@ html[data-motion="off"] .scene__dust { display: none; }
   position: relative;
   z-index: 1;
   height: 190px;
-  margin-top: var(--s6);
-  overflow: hidden;
+  margin-top: var(--s7);
+  overflow: visible;
 
   /* the floor they walk on */
   background:
@@ -1514,65 +1514,6 @@ html[data-motion="off"] .mark__wing.is-flexing { animation: none; }
 html[data-motion="off"] .cord.is-swinging { animation: none; }
 
 /* ============================================================================
-   THE BIRD
-   The loading screen. It covers the page for about half a second while the
-   next one loads, and it is the only thing on the site that ever covers text.
-   ========================================================================= */
-
-.veil {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  display: grid;
-  place-items: center;
-  background: var(--void);
-  opacity: 0;
-}
-
-.veil[hidden] { display: none; }
-
-.veil.is-flying { animation: veil-in 200ms steps(3) forwards; }
-
-@keyframes veil-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.veil__stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--s5);
-}
-
-.veil__bird {
-  display: block;
-  transform: translateX(-40vw);
-}
-
-.veil.is-flying .veil__bird {
-  animation: fly-across 900ms steps(12) 1 forwards;
-}
-
-/* Left to right, rising slightly, the way a bird actually crosses a window. */
-@keyframes fly-across {
-  0%   { transform: translate3d(-46vw, 14px, 0); }
-  100% { transform: translate3d(46vw, -14px, 0); }
-}
-
-.veil__word {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion]) .veil { display: none; }
-}
-
-/* ============================================================================
    BACK TO THE TOP
    A short length of the same rope as the scrollbar, with a ring to grab.
    Bottom LEFT, because the assistant already owns the bottom right.
@@ -1792,3 +1733,320 @@ html[data-motion="off"] .cord.is-swinging .cord__bulb { animation: none; }
   cursor: pointer;
 }
 .forget__btn:hover { color: var(--text); }
+
+/* ============================================================================
+   THE MARK, SHINING
+   The wings carry their own light: a halo that breathes behind them, and a
+   nova that goes off inside the sprite itself every few seconds. The halo is
+   CSS, the nova is drawn into the pixels. Between them the flat artwork reads
+   as something with depth and a light source.
+   ========================================================================= */
+
+.mark { position: relative; }
+
+.mark__wing { position: relative; z-index: 1; }
+
+/* The halo. Two stacked radial gradients so the falloff is not a flat disc,
+   and a slow breath so it never sits still. */
+.mark::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 96px;
+  height: 96px;
+  margin-top: -48px;
+  margin-left: -12px;
+  pointer-events: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.30) 0%, rgba(210,240,240,0.16) 34%, transparent 62%),
+    radial-gradient(circle, rgba(160,230,230,0.22) 0%, transparent 72%);
+  animation: halo 4.2s ease-in-out infinite;
+}
+
+@keyframes halo {
+  0%, 100% { transform: scale(0.82); opacity: 0.55; }
+  50%      { transform: scale(1.12); opacity: 1; }
+}
+
+html[data-theme="light"] .mark::before {
+  background:
+    radial-gradient(circle, rgba(120,200,205,0.34) 0%, rgba(90,180,190,0.18) 36%, transparent 64%),
+    radial-gradient(circle, rgba(60,150,165,0.20) 0%, transparent 74%);
+}
+
+/* Four points of light around it, out of step with each other, so the whole
+   thing twinkles rather than pulses as one lump. */
+.mark__spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #FFFFFF;
+  box-shadow: 0 0 6px 2px rgba(255,255,255,0.8);
+  opacity: 0;
+  pointer-events: none;
+  animation: twinkle 3.6s steps(3) infinite;
+}
+
+.mark__spark:nth-of-type(1) { left: 4px;  top: 6px;  animation-delay: 0s; }
+.mark__spark:nth-of-type(2) { left: 62px; top: 2px;  animation-delay: 0.9s; }
+.mark__spark:nth-of-type(3) { left: 78px; top: 26px; animation-delay: 1.8s; }
+.mark__spark:nth-of-type(4) { left: 14px; top: 32px; animation-delay: 2.7s; }
+
+@keyframes twinkle {
+  0%, 70%, 100% { opacity: 0; transform: scale(0.4); }
+  80%           { opacity: 1; transform: scale(1.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) .mark::before,
+  html:not([data-motion]) .mark__spark { animation: none; }
+}
+html[data-motion="off"] .mark::before { animation: none; opacity: 0.7; }
+html[data-motion="off"] .mark__spark { animation: none; opacity: 0; }
+
+/* ============================================================================
+   SECTION TITLES CATCH THE LIGHT
+   A band of brightness travels across the bitmap type every few seconds. The
+   SVG is filled with currentColor, so animating the colour moves the light.
+   ========================================================================= */
+
+.px--head, .px--amber, .px--mag {
+  animation: title-sheen 7s ease-in-out infinite;
+}
+
+@keyframes title-sheen {
+  0%, 88%, 100% { filter: none; }
+  93%           { filter: brightness(1.55) drop-shadow(0 0 10px currentColor); }
+}
+
+.px { position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) .px--head,
+  html:not([data-motion]) .px--amber,
+  html:not([data-motion]) .px--mag { animation: none; }
+}
+html[data-motion="off"] .px--head,
+html[data-motion="off"] .px--amber,
+html[data-motion="off"] .px--mag { animation: none; }
+
+/* ============================================================================
+   ARRIVING
+   Blocks wait until they are nearly on screen and then arrive. A page of
+   solid text is a wall; this hands it over one piece at a time.
+   ========================================================================= */
+
+/* The hidden state is applied ONLY once JavaScript has armed it, and JS arms
+   it only after it has already revealed everything currently on screen. If
+   the script never runs, or the observer never fires, the page is simply
+   visible — text that never appears is a far worse failure than a missing
+   animation, so the default has to be "shown". */
+html.reveal-armed [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 420ms ease-out, transform 420ms cubic-bezier(.2,.7,.3,1);
+}
+
+html.reveal-armed [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Cards in a row arrive one after another rather than all together. */
+.grid > [data-reveal]:nth-child(2) { transition-delay: 70ms; }
+.grid > [data-reveal]:nth-child(3) { transition-delay: 140ms; }
+.grid > [data-reveal]:nth-child(4) { transition-delay: 210ms; }
+.grid > [data-reveal]:nth-child(5) { transition-delay: 280ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; }
+}
+html[data-motion="off"] [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; }
+
+/* ============================================================================
+   A PAGE PER MOOD
+   The home page is the shop window and is allowed to be loud. The dashboard
+   is somewhere a member sits for twenty minutes, so it drops the contrast,
+   opens up the line spacing and turns the background noise down. Same
+   components, same tokens — only the dial settings change.
+   ========================================================================= */
+
+/* --- Home: the shop window --- */
+body[data-theme-page="home"] .hero { padding-bottom: var(--s9); }
+
+body[data-theme-page="home"] .hero__head { position: relative; }
+
+body[data-theme-page="home"] .strip__cell {
+  background: linear-gradient(180deg, var(--panel-hi) 0%, var(--panel) 100%);
+}
+
+body[data-theme-page="home"] .scene__grid { opacity: 0.18; }
+
+/* --- Dashboard: eye-comforting, and still professional --- */
+body[data-theme-page="calm"] {
+  --panel: #17162E;
+  --panel-hi: #201E40;
+  line-height: 1.75;
+}
+
+html[data-theme="light"] body[data-theme-page="calm"] {
+  --panel: #FBFAFE;
+  --panel-hi: #F1EEFA;
+}
+
+/* The background pattern is a nice thing to glance at and a poor thing to
+   read over. On the one page people actually sit and read, it recedes. */
+body[data-theme-page="calm"] .scene__grid { opacity: 0.06; }
+body[data-theme-page="calm"] .glass { opacity: 0.45; }
+body[data-theme-page="calm"] .flyer { opacity: 0.28; }
+
+body[data-theme-page="calm"] .frame { padding: var(--s6); }
+body[data-theme-page="calm"] .t-body { max-width: 60ch; }
+body[data-theme-page="calm"] .panel__h { letter-spacing: 0.2em; }
+
+/* No sheen on the dashboard. A heading that flashes at somebody reading a
+   timetable is a heading getting in the way. */
+body[data-theme-page="calm"] .px--head,
+body[data-theme-page="calm"] .px--amber { animation: none; }
+
+/* --- Login: the door --- */
+.cabinet__door {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--s4);
+  margin-bottom: var(--s3);
+}
+
+/* ============================================================================
+   THE CROWD IS NOT PENNED IN
+   The yard has a floor and no ceiling. Every few hops one of them clears the
+   top of it entirely, which is only possible because nothing clips them.
+   ========================================================================= */
+
+.party { overflow: visible; }
+
+.party__one { z-index: 2; }
+
+/* ============================================================================
+   THE WAITING SCREEN
+   The mark, a line worth reading, and a different scene every time.
+   ========================================================================= */
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: var(--void);
+  opacity: 0;
+  overflow: hidden;
+}
+
+.veil[hidden] { display: none; }
+
+.veil.is-flying { animation: veil-in 220ms steps(3) forwards; }
+
+@keyframes veil-in { from { opacity: 0; } to { opacity: 1; } }
+
+.veil__sky { position: absolute; inset: 0; pointer-events: none; }
+
+.veil__stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s5);
+  padding: var(--s5);
+  text-align: center;
+}
+
+/* The wings rise into the middle of the screen and hang there. */
+.veil__logo { display: block; }
+
+.veil.is-flying .veil__logo {
+  animation: logo-rise 760ms cubic-bezier(.15,.8,.25,1) forwards;
+}
+
+@keyframes logo-rise {
+  0%   { transform: translateY(26px) scale(0.72); opacity: 0; }
+  60%  { transform: translateY(0) scale(1.06); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.veil__word {
+  max-width: 30ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  opacity: 0;
+}
+
+.veil.is-flying .veil__word {
+  animation: word-in 620ms ease-out 180ms forwards;
+}
+
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.veil__cast {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--s5);
+  min-height: 72px;
+}
+
+.veil__member { display: block; }
+
+/* Each scene moves its cast differently. */
+.veil__cast--party .veil__member {
+  animation: cast-hop 620ms steps(2) infinite;
+  animation-delay: calc(var(--i) * 90ms);
+}
+
+.veil__cast--flock .veil__member {
+  animation: cast-fly 1.8s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 160ms);
+}
+
+.veil__cast--rain .veil__member,
+.veil__cast--snow .veil__member {
+  animation: cast-bob 2.4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 300ms);
+}
+
+.veil__cast--tea .veil__member {
+  animation: cast-bob 3.4s ease-in-out infinite alternate;
+}
+
+@keyframes cast-hop {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+
+@keyframes cast-fly {
+  from { transform: translate(-18px, 4px); }
+  to   { transform: translate(18px, -10px); }
+}
+
+@keyframes cast-bob {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) .veil { display: none; }
+}
+html[data-motion="off"] .veil { display: none; }
+
+@media (max-width: 560px) {
+  .veil__word { font-size: 15px; }
+  .veil__cast { gap: var(--s4); }
+}

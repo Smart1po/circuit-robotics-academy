@@ -224,8 +224,10 @@
         slot: i / PARTY.length,          /* where it starts, as a fraction   */
         dir: i % 2 ? -1 : 1,
         speed: 14 + (i % 5) * 7,         /* px per second                    */
-        hopEvery: 1.6 + (i % 4) * 0.55,  /* seconds between hops             */
-        hopHeight: 8 + (i % 3) * 6,
+        hopEvery: 1.4 + (i % 4) * 0.5,   /* seconds between hops             */
+        hopHeight: 16 + (i % 3) * 10,    /* enough to clear the yard wall    */
+        bigEvery: 4 + (i % 3),           /* every few hops, a proper leap    */
+        hops: 0,
         hopPhase: (i * 0.37) % 1,
         wide: 0
       });
@@ -233,7 +235,7 @@
 
     var caption = doc.createElement('p');
     caption.className = 'party__caption';
-    caption.textContent = 'You read the whole thing. The workshop appreciates it.';
+    caption.textContent = 'You read the whole thing. These buddies appreciate it.';
     party.appendChild(caption);
 
     party.__walkers = walkers;
@@ -288,9 +290,18 @@
 
           /* A hop is a half sine over the back third of each cycle, so they
            * spend most of the time walking and only some of it in the air. */
-          var cycle = ((now / 1000) / k.hopEvery + k.hopPhase) % 1;
-          if (cycle > 0.66) {
-            lift = Math.sin((cycle - 0.66) / 0.34 * Math.PI) * k.hopHeight;
+          var t = (now / 1000) / k.hopEvery + k.hopPhase;
+          var cycle = t % 1;
+
+          /* Count the hops so every few can be a proper leap — one that
+           * clears the top of the yard entirely. The yard does not clip
+           * them any more, so they really do get out. */
+          var n = Math.floor(t);
+          if (n !== k.hops) { k.hops = n; k.big = (n % k.bigEvery === 0); }
+
+          if (cycle > 0.55) {
+            var arc = Math.sin((cycle - 0.55) / 0.45 * Math.PI);
+            lift = arc * k.hopHeight * (k.big ? 3.4 : 1);
           }
         } else {
           /* Asleep: parked where they are, sitting on the floor. */

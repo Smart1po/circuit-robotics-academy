@@ -379,10 +379,61 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Reveal
+   * A page of solid text is a wall. Each block waits until it is nearly on
+   * screen and then arrives, so reading it feels like being handed one thing
+   * at a time rather than all of it at once.
+   * ------------------------------------------------------------------ */
+  function initReveal() {
+    var blocks = doc.querySelectorAll('[data-reveal]');
+    if (!blocks.length) return;
+
+    /* Without the observer, or with motion off, everything is simply shown.
+     * The effect is a nicety; the words are the point. */
+    if (!global.IntersectionObserver || motionOff()) return;
+
+    function onScreen(el) {
+      var r = el.getBoundingClientRect();
+      return r.top < global.innerHeight && r.bottom > 0;
+    }
+
+    /* Anything already on screen is revealed before the hidden state is ever
+     * applied, so nothing above the fold can flash or, worse, stay blank. */
+    var i;
+    for (i = 0; i < blocks.length; i++) {
+      if (onScreen(blocks[i])) blocks[i].classList.add('is-in');
+    }
+
+    doc.documentElement.classList.add('reveal-armed');
+
+    var io = new global.IntersectionObserver(function (entries) {
+      for (var j = 0; j < entries.length; j++) {
+        if (!entries[j].isIntersecting) continue;
+        entries[j].target.classList.add('is-in');
+        io.unobserve(entries[j].target);
+      }
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0 });
+
+    for (i = 0; i < blocks.length; i++) io.observe(blocks[i]);
+
+    /* Backstop. If the observer somehow never fires for a block that is
+     * plainly on screen, show it anyway a moment later. No paragraph on this
+     * site is allowed to depend on an animation to become readable. */
+    global.setTimeout(function () {
+      for (var m = 0; m < blocks.length; m++) {
+        if (!blocks[m].classList.contains('is-in') && onScreen(blocks[m])) {
+          blocks[m].classList.add('is-in');
+        }
+      }
+    }, 1200);
+  }
+
+  /* ------------------------------------------------------------------ *
    * Boot
    * ------------------------------------------------------------------ */
   function boot() {
     initMotionToggle();
+    initReveal();
     initGuarded();
     initMeter();
     initLogin();

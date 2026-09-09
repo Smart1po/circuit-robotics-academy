@@ -21,14 +21,14 @@
      the wrong one on the way in. -->
 <script src="assets/js/theme.js"></script>
 </head>
-<body data-page="home">
+<body data-page="home" data-theme-page="home">
 
 <a class="skip" href="#main">Skip to content</a>
 <div class="glass" aria-hidden="true"></div>
 
 <header class="hud">
   <div class="wrap hud__in">
-    <a class="hud__mark mark" href="index.html"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
+    <a class="hud__mark mark" href="index.html"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><i class="mark__spark" aria-hidden="true"></i><i class="mark__spark" aria-hidden="true"></i><i class="mark__spark" aria-hidden="true"></i><i class="mark__spark" aria-hidden="true"></i><span>CIRCUIT</span></a>
     <span class="hud__stage">Stage 1-1 · Home</span>
     <nav class="hud__nav" aria-label="Main">
       <a class="chip" href="index.html" aria-current="page">Home</a>
@@ -68,7 +68,7 @@
       <div class="rail__car"><span class="sprite" data-sprite="bolt" data-scale="3"></span></div>
     </div>
 
-    <div class="strip">
+    <div class="strip" data-reveal>
       <div class="strip__cell"><b class="strip__n">12</b><span class="t-cap">Weeks per term</span></div>
       <div class="strip__cell"><b class="strip__n">3</b><span class="t-cap">Age bands</span></div>
       <div class="strip__cell"><b class="strip__n">1</b><span class="t-cap">Robot per team</span></div>
@@ -77,7 +77,7 @@
   </section>
 
   <!-- ================= WHAT WE TEACH ================= -->
-  <section class="wrap section" id="teach">
+  <section class="wrap section" data-reveal id="teach">
     <h2 class="px px--head" data-px="WHAT WE TEACH" data-px-max="5">What we teach</h2>
 
     <p class="t-lead" style="margin-top:24px">
@@ -87,7 +87,7 @@
 
     <div class="grid grid--2" style="margin-top:32px">
 
-      <article class="frame card">
+      <article class="frame card" data-reveal>
         <span class="card__sprite sprite" data-sprite="arm" data-scale="2"></span>
         <p class="card__no">Unit 01</p>
         <h3 class="card__title">Build &amp; Drive</h3>
@@ -100,7 +100,7 @@
         <p class="card__out">You leave with: <b>a chassis that drives three metres straight</b>, and a written record of how far off it was the first time.</p>
       </article>
 
-      <article class="frame card">
+      <article class="frame card" data-reveal>
         <span class="card__sprite sprite" data-sprite="tip" data-scale="2"></span>
         <p class="card__no">Unit 02</p>
         <h3 class="card__title">Circuits &amp; Soldering</h3>
@@ -118,7 +118,7 @@
         </p>
       </article>
 
-      <article class="frame card">
+      <article class="frame card" data-reveal>
         <span class="card__sprite sprite" data-sprite="scan" data-scale="2"></span>
         <p class="card__no">Unit 03</p>
         <h3 class="card__title">Sensors, Code &amp; Vision</h3>
@@ -132,7 +132,7 @@
         <p class="card__out">You leave with: <b>a robot that follows a line without wobbling</b>, and code you can explain line by line.</p>
       </article>
 
-      <article class="frame card">
+      <article class="frame card" data-reveal>
         <span class="card__sprite sprite" data-sprite="kite" data-scale="2"></span>
         <p class="card__no">Unit 04</p>
         <h3 class="card__title">Drone Systems</h3>
@@ -152,7 +152,7 @@
   </section>
 
   <!-- ================= HOW A TERM RUNS ================= -->
-  <section class="wrap section" id="term">
+  <section class="wrap section" data-reveal id="term">
     <h2 class="px px--head" data-px="HOW A TERM RUNS" data-px-max="5">How a term runs</h2>
 
     <p class="t-lead" style="margin-top:24px">
@@ -200,7 +200,7 @@
   </section>
 
   <!-- ================= WHO IT'S FOR ================= -->
-  <section class="wrap section" id="bands">
+  <section class="wrap section" data-reveal id="bands">
     <h2 class="px px--head" data-px="WHO IT'S FOR" data-px-max="5">Who it's for</h2>
 
     <p class="t-lead" style="margin-top:24px">
@@ -209,7 +209,7 @@
     </p>
 
     <div class="grid grid--3" style="margin-top:32px">
-      <article class="frame">
+      <article class="frame" data-reveal>
         <p class="band__name">SPARK</p>
         <p class="band__meta">Ages 8–10 · 90 minutes a week</p>
         <p class="band__fee">45 KD<small>per term</small></p>
@@ -220,7 +220,7 @@
         </p>
       </article>
 
-      <article class="frame">
+      <article class="frame" data-reveal>
         <p class="band__name">RELAY</p>
         <p class="band__meta">Ages 11–13 · 2 hours a week</p>
         <p class="band__fee">60 KD<small>per term</small></p>
@@ -230,7 +230,7 @@
         </p>
       </article>
 
-      <article class="frame">
+      <article class="frame" data-reveal>
         <p class="band__name">APEX</p>
         <p class="band__meta">Ages 14–17 · 2 hours a week</p>
         <p class="band__fee">75 KD<small>per term</small></p>
@@ -252,7 +252,7 @@
         </p>
       </article>
 
-      <article class="frame">
+      <article class="frame" data-reveal>
         <p class="band__name">Kit deposit</p>
         <p class="band__meta">Refunded</p>
         <p class="band__fee">20 KD<small>returned in full</small></p>
@@ -262,7 +262,7 @@
       </article>
     </div>
 
-    <div class="frame frame--well" style="margin-top:24px">
+    <div class="frame frame--well" data-reveal style="margin-top:24px">
       <p class="t-body">
         <b>What a term fee includes.</b> The kit for the term, every consumable,
         the printed logbook, the dry run and the scored run. What it does not
@@ -273,10 +273,10 @@
   </section>
 
   <!-- ================= COMPETITION ================= -->
-  <section class="wrap section" id="competition">
+  <section class="wrap section" data-reveal id="competition">
     <h2 class="px px--mag" data-px="COMPETITION TRACK" data-px-max="5" style="color:var(--magenta)">Competition track</h2>
 
-    <div class="frame frame--mag card" style="margin-top:24px">
+    <div class="frame frame--mag card" data-reveal style="margin-top:24px">
       <span class="card__sprite sprite" data-sprite="claw" data-scale="3"></span>
 
       <p class="t-lead">A mat, six objectives, one hundred and fifty seconds, two attempts.</p>
@@ -307,11 +307,11 @@
   </section>
 
   <!-- ================= FAQ ================= -->
-  <section class="wrap section" id="questions">
+  <section class="wrap section" data-reveal id="questions">
     <h2 class="px px--head" data-px="BEFORE YOU|SIGN UP" data-px-max="5">Before you sign up</h2>
 
     <div class="grid grid--2" style="margin-top:32px">
-      <article class="frame">
+      <article class="frame" data-reveal>
         <h3 class="card__title">Do you enter students into competitions?</h3>
         <p class="t-body">
           No. Our competition track is written and scored in-house. We are not
@@ -319,7 +319,7 @@
           students for external events.
         </p>
       </article>
-      <article class="frame">
+      <article class="frame" data-reveal>
         <h3 class="card__title">What does a student take home?</h3>
         <p class="t-body">
           Their logbook, their code and their build notes. Kits stay with
@@ -327,14 +327,14 @@
           complete.
         </p>
       </article>
-      <article class="frame">
+      <article class="frame" data-reveal>
         <h3 class="card__title">Does my child need to know how to code?</h3>
         <p class="t-body">
           No. SPARK starts in a block editor. RELAY moves to text. APEX writes
           the whole control loop. Nobody is expected to arrive with any of it.
         </p>
       </article>
-      <article class="frame">
+      <article class="frame" data-reveal>
         <h3 class="card__title">Is there a trial session?</h3>
         <p class="t-body">
           One per family, per band, in week one or two of a term. It is the same
@@ -346,8 +346,8 @@
   </section>
 
   <!-- ================= CTA ================= -->
-  <section class="wrap section" id="enter">
-    <div class="frame frame--cyan" style="text-align:center">
+  <section class="wrap section" data-reveal id="enter">
+    <div class="frame frame--cyan" data-reveal style="text-align:center">
       <h2 class="px px--head" data-px="READY PLAYER" data-px-align="center" data-px-max="6">Ready player</h2>
       <p class="t-lead" style="margin:24px auto 0">
         Members log in for the timetable, the kit library and the competition

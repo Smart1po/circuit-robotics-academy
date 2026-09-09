@@ -182,8 +182,13 @@
       if (err.status !== 400 && err.status !== 401) throw err;
 
       return B.signUp(email, password).then(function (data) {
+        /* No token means the project asks people to confirm their address
+         * first. That is not a failure — it is the account being created
+         * properly — so it must not be dressed up as an error. */
         if (!data || !data.access_token) {
-          throw new Error('Account created. Check your email to confirm it, then sign in.');
+          var e = new Error('confirm-sent');
+          e.confirmSent = true;
+          throw e;
         }
         return data;
       });
@@ -199,8 +204,51 @@
       return B.joinMembers(name)['catch'](function () {})
         .then(function () { global.location.href = nextPage(); });
     })['catch'](function (err) {
+      if (err && err.confirmSent) return confirmSent(email);
       fail(err && err.message ? err.message : 'Something went wrong. Try again.');
     });
+  }
+
+  /* An account was made and needs confirming. This is good news, so it reads
+   * as good news: the form is replaced, not decorated with a red box. */
+  function confirmSent(email) {
+    var cabinet = doc.querySelector('.cabinet .frame');
+    if (!cabinet) return;
+
+    cabinet.innerHTML = '';
+
+    var h = doc.createElement('h1');
+    h.className = 'px px--head';
+    h.setAttribute('data-px', 'CHECK YOUR|INBOX');
+    h.setAttribute('data-px-align', 'center');
+    h.setAttribute('data-px-max', '6');
+    h.textContent = 'Check your inbox';
+
+    var p1 = doc.createElement('p');
+    p1.className = 't-lead';
+    p1.style.marginTop = '24px';
+    p1.textContent = 'Your account is made. We have sent a link to ' + email +
+      ' — click it and you are a member.';
+
+    var p2 = doc.createElement('p');
+    p2.className = 'notice';
+    p2.style.marginTop = '20px';
+    p2.textContent = 'Nothing else to do here. Once you have clicked the link, ' +
+      'come back and sign in with the same address and password.';
+
+    var back = doc.createElement('p');
+    back.style.marginTop = '24px';
+    var a = doc.createElement('a');
+    a.href = 'index.html';
+    a.textContent = '← Back to home';
+    back.appendChild(a);
+
+    cabinet.appendChild(h);
+    cabinet.appendChild(p1);
+    cabinet.appendChild(p2);
+    cabinet.appendChild(back);
+
+    if (global.PixFont) global.PixFont.render(h);
   }
 
   /* An escape hatch on the one page where a remembered address is visible.

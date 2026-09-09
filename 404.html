@@ -13,12 +13,18 @@
 <title>Page not found — CIRCUIT</title>
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#07060E">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/css/circuit.css">
+<link rel="icon" href="/circuit-robotics-academy/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/circuit-robotics-academy/assets/css/circuit.css">
 
-<!-- A 404 is the one page that must still read when everything else is
-     missing. If the stylesheet above never arrives - a deep path, a bad
-     deploy - these few rules keep it legible instead of raw markup. -->
+<!-- Paths here are absolute from the site root, unlike every other page,
+     which uses relative ones. A 404 is served for ANY missing address, at any
+     depth: relative paths resolve against the URL that was asked for, so
+     /kits/spark/missing would look for its stylesheet in /kits/spark/. These
+     resolve the same wherever the miss happened. The prefix is the GitHub
+     Pages project path; on a root deployment it becomes "/".
+
+     The rules below are a second net. A 404 is the one page that has to stay
+     readable when the stylesheet itself is the thing that has gone missing. -->
 <style>
   body { background:#07060E; color:#EDEBFF; margin:0;
          font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -29,7 +35,7 @@
 
 <!-- Sets the theme before the first paint, so the page never flashes
      the wrong one on the way in. -->
-<script src="assets/js/theme.js"></script>
+<script src="/circuit-robotics-academy/assets/js/theme.js"></script>
 </head>
 <body data-page="404">
 
@@ -38,12 +44,12 @@
 
 <header class="hud">
   <div class="wrap hud__in">
-    <a class="hud__mark mark" href="index.html"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
+    <a class="hud__mark mark" href="/circuit-robotics-academy/"><span class="mark__wing sprite" data-wing data-sprite="wing-shut" data-scale="2"></span><span>CIRCUIT</span></a>
     <span class="hud__stage">Signal lost</span>
     <nav class="hud__nav" aria-label="Main">
-      <a class="chip" href="index.html">Home</a>
-      <a class="chip" href="members.html">Members</a>
-      <a class="chip" href="login.html">Log in</a>
+      <a class="chip" href="/circuit-robotics-academy/">Home</a>
+      <a class="chip" href="/circuit-robotics-academy/members.html">Members</a>
+      <a class="chip" href="/circuit-robotics-academy/login.html">Log in</a>
     </nav>
   </div>
 </header>
@@ -64,12 +70,12 @@
         with nothing, which is roughly how a first line-following run goes too.
       </p>
 
-      <p style="margin-top:24px"><a class="btn" href="index.html">Back to home</a></p>
+      <p style="margin-top:24px"><a class="btn" href="/circuit-robotics-academy/">Back to home</a></p>
 
       <ul class="stack" style="margin-top:24px;text-align:left">
         <li><a href="index.html#teach">What we teach</a></li>
         <li><a href="index.html#bands">Age bands and fees</a></li>
-        <li><a href="login.html">Log in to the members area</a></li>
+        <li><a href="/circuit-robotics-academy/login.html">Log in to the members area</a></li>
       </ul>
     </div>
   </div>
@@ -99,10 +105,10 @@
       <nav aria-label="Members">
         <h2>Members</h2>
         <ul class="stack">
-          <li><a href="login.html">Log in</a></li>
-          <li><a href="members.html#timetable">Class timetable</a></li>
-          <li><a href="members.html#kits">Robot kits</a></li>
-          <li><a href="members.html#rules">Bench rules</a></li>
+          <li><a href="/circuit-robotics-academy/login.html">Log in</a></li>
+          <li><a href="/circuit-robotics-academy/members.html#timetable">Class timetable</a></li>
+          <li><a href="/circuit-robotics-academy/members.html#kits">Robot kits</a></li>
+          <li><a href="/circuit-robotics-academy/members.html#rules">Bench rules</a></li>
         </ul>
       </nav>
 
@@ -125,13 +131,13 @@
   </div>
 </footer>
 
-<script src="assets/js/pixfont.js"></script>
-<script src="assets/js/pixel.js"></script>
-<script src="assets/js/sprites.js"></script>
-<script src="assets/js/session.js"></script>
-<script src="assets/js/scene.js"></script>
-<script src="assets/js/assistant.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/nav.js"></script>
+<script src="/circuit-robotics-academy/assets/js/pixfont.js"></script>
+<script src="/circuit-robotics-academy/assets/js/pixel.js"></script>
+<script src="/circuit-robotics-academy/assets/js/sprites.js"></script>
+<script src="/circuit-robotics-academy/assets/js/session.js"></script>
+<script src="/circuit-robotics-academy/assets/js/scene.js"></script>
+<script src="/circuit-robotics-academy/assets/js/assistant.js"></script>
+<script src="/circuit-robotics-academy/assets/js/app.js"></script>
+<script src="/circuit-robotics-academy/assets/js/nav.js"></script>
 </body>
 </html>

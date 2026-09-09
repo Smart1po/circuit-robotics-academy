@@ -18,6 +18,7 @@
 (function (global) {
   'use strict';
 
+  var doc = global.document;
   var KEY = 'circuit.session';
 
   /* "Keep me signed in" moves the same session into localStorage, which
@@ -90,6 +91,11 @@
 
     if (!data || typeof data.name !== 'string' || !data.name) return null;
 
+    if (!fresh(data)) {
+      end();
+      return null;
+    }
+
     /* Only mirror it into the tab once it has been parsed and found sound.
      * Copying first would spread a corrupt value from one store to the other. */
     if (fromKept) {
@@ -145,15 +151,39 @@
     try { return !!global.localStorage.getItem(KEEP); } catch (err) { return false; }
   }
 
-  /* Signing out clears both stores in THIS browser. Another tab that is
-   * already open keeps its own copy in memory until it is reloaded — a
-   * limitation of having no server to tell the other tab anything. */
+  /* Signing out clears both stores, and tells every other open tab to do the
+   * same. There is no server to push that message, but the browser fires a
+   * `storage` event at other tabs on the same origin, which is enough. */
   function end() {
     try { global.sessionStorage.removeItem(KEY); } catch (err) {}
     try {
       global.localStorage.removeItem(KEEP);
       global.localStorage.removeItem(EMAIL);
     } catch (err) {}
+  }
+
+  /* Every other tab hears about a sign-out and follows it. Without this, a
+   * kept session that outlives the browser could be signed out on one tab and
+   * still be sitting open on another — which is exactly the case someone on a
+   * shared machine is trying to avoid. */
+  global.addEventListener('storage', function (e) {
+    if (e.key !== KEEP || e.newValue !== null) return;
+
+    try { global.sessionStorage.removeItem(KEY); } catch (err) {}
+
+    if (doc.documentElement.getAttribute('data-guard') === 'members') {
+      global.location.replace('login.html');
+    }
+  });
+
+  /* A kept session is a convenience, not a permanent grant. After thirty days
+   * it is treated as stale and cleared, so a machine nobody has touched in a
+   * month is not still holding somebody's address. */
+  var MAX_AGE = 30 * 24 * 60 * 60 * 1000;
+
+  function fresh(data) {
+    if (!data || typeof data.startedAt !== 'number') return true;
+    return (Date.now() - data.startedAt) < MAX_AGE;
   }
 
   /* Members-only pages call this. No session, no entry. */

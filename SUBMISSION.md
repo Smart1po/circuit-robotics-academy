@@ -35,16 +35,16 @@ the README.
 ### Removed
 
 **1. My own full name, sitting in the deployed JavaScript.**
-`assets/js/session.js` carried a comment documenting how the display name is worked out:
+`assets/js/session.js` carried a comment documenting how the display name is worked out, and it
+used my real first and last name as the worked example, in the form
+`"firstname.lastname@example.com" -> "Firstname Lastname"`. `README.md` repeated the same pair.
 
-```js
-/* "mariam.madouh@example.com" -> "Mariam Madouh" */
-```
+Neither is ever rendered on screen — and that is exactly the case the brief warns about,
+*"anything that is in the code but not visible on the screen."* Anyone can open the source of a
+deployed page. Both now read `first.last@example.com` → `First Last`.
 
-and `README.md` repeated the same pair. Neither is ever rendered on screen — and that is
-exactly the case the brief warns about, *"anything that is in the code but not visible on the
-screen."* Anyone can open the source of a deployed page. Replaced both with
-`first.last@example.com` → `First Last`.
+This document is itself served from the live site, so it does not reproduce the original line.
+Quoting it here to prove I removed it would have published it a third time.
 
 **2. `demo@demo.com`.**
 The login page suggested it and used it as the input placeholder. `demo.com` is somebody's

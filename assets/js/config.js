@@ -7,7 +7,9 @@
  *
  * Supabase Dashboard → Project Settings → Data API
  *   url  is "Project URL"        e.g. https://abcdefgh.supabase.co
- *   key  is the "anon public" / publishable key
+ *   key  is the publishable key (sb_publishable_...) from Settings → API Keys,
+ *        or the legacy anon key (eyJ...) from the tab beside it. Either works
+ *        as the apikey header; the publishable one is the current form.
  *
  * ON PUTTING A KEY IN A PUBLIC REPOSITORY. The anon key is designed to be
  * public — it ships in the JavaScript of every Supabase site on the web, and
@@ -20,7 +22,7 @@
  */
 window.CIRCUIT_CONFIG = {
   supabase: {
-    url: '',
-    key: ''
+    url: 'https://xdaivsrzyrewasuurldp.supabase.co',
+    key: 'sb_publishable_zHBHBN1LondtcRDYAvednw_R7M3ycvA'
   }
 };

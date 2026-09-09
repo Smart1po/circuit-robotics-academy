@@ -1,11 +1,19 @@
-# Turning the back end on
+# The back end
 
-Everything is built and wired. It is switched off because it needs two values
-that only exist in your Supabase project, and I am not going to invent them.
+**Live.** Project `CIRCUIT` (`xdaivsrzyrewasuurldp`), keys in `assets/js/config.js`,
+table and policies created.
 
-When these two lines are filled in, the site stops being a front-end preview
-and starts being a product: real accounts, passwords hashed on a server, and a
-members list that everyone shares.
+Verified in the database:
+
+| | |
+|---|---|
+| `members` table | 5 columns |
+| Row Level Security | **enabled** |
+| Policies | 3 — read for signed-in, insert own row, update own row |
+| Trigger | `members_set_user_id`, fills `user_id` from the token |
+
+The rest of this file is the record of how it was set up, and the one setting
+still to decide.
 
 ---
 

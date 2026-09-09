@@ -158,7 +158,7 @@
   /* The real thing. Try to sign in; if this address has never been seen
    * before, create the account instead. Either way the password is handled
    * by the server and this site never holds it. */
-  function signInForReal(email, password, submit, summary, list) {
+  function doTheRealThing(email, password, name, submit, summary, list) {
     var B = global.CircuitBackend;
 
     function fail(message) {
@@ -166,25 +166,28 @@
       var li = doc.createElement('li');
       li.textContent = message;
       list.appendChild(li);
-      summary.querySelector('h2').textContent = 'Could not sign you in';
+      summary.querySelector('h2').textContent =
+        mode === 'signup' ? 'Could not create your account' : 'Could not log you in';
       summary.setAttribute('data-open', 'true');
       summary.focus();
 
-      if (submit) { submit.disabled = false; submit.textContent = 'Sign in'; }
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = mode === 'signup' ? 'Create account' : 'Log in';
+      }
     }
 
-    if (submit) { submit.disabled = true; submit.textContent = 'Signing in…'; }
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = mode === 'signup' ? 'Creating…' : 'Logging in…';
+    }
 
-    B.signIn(email, password)['catch'](function (err) {
-      /* "Invalid login credentials" covers both a wrong password and an
-       * address the server has never seen. Try creating it; if THAT fails
-       * because it already exists, the password really was wrong. */
-      if (err.status !== 400 && err.status !== 401) throw err;
+    var step;
 
-      return B.signUp(email, password).then(function (data) {
-        /* No token means the project asks people to confirm their address
-         * first. That is not a failure — it is the account being created
-         * properly — so it must not be dressed up as an error. */
+    if (mode === 'signup') {
+      step = B.signUp(email, password, name).then(function (data) {
+        /* No token means this project asks people to confirm their address
+         * first. The account was made; it is simply waiting. */
         if (!data || !data.access_token) {
           var e = new Error('confirm-sent');
           e.confirmSent = true;
@@ -192,20 +195,34 @@
         }
         return data;
       });
-    }).then(function () {
+    } else {
+      step = B.signIn(email, password);
+    }
+
+    step.then(function () {
       return B.me();
     }).then(function (user) {
-      var name = (user && user.user_metadata && user.user_metadata.display_name) ||
-                 global.CircuitSession.nameFromEmail(email);
+      var display = name ||
+        (user && user.user_metadata && user.user_metadata.display_name) ||
+        global.CircuitSession.nameFromEmail(email);
 
       global.CircuitSession.start(email, true);
 
-      /* Put them on the shared list, so everybody else sees them too. */
-      return B.joinMembers(name)['catch'](function () {})
+      return B.joinMembers(display)['catch'](function () {})
         .then(function () { global.location.href = nextPage(); });
     })['catch'](function (err) {
       if (err && err.confirmSent) return confirmSent(email);
-      fail(err && err.message ? err.message : 'Something went wrong. Try again.');
+
+      /* Say the useful thing rather than the server's wording. */
+      var msg = err && err.message ? err.message : 'Something went wrong. Try again.';
+
+      if (/invalid login credentials/i.test(msg)) {
+        msg = mode === 'signup'
+          ? 'That address already has an account. Log in instead.'
+          : 'That email and password do not match an account. If you are new, create an account.';
+      }
+
+      fail(msg);
     });
   }
 
@@ -312,10 +329,67 @@
     if (pw) pw.setAttribute('autocomplete', 'current-password');
   }
 
+  /* Which of the two things this form is doing. Guessing - trying to sign in
+   * and treating the failure as a sign-up - worked, but it meant somebody who
+   * simply mistyped their password got an account created instead of being
+   * told. Two buttons, two intentions, no guessing. */
+  var mode = 'login';
+
+  function setMode(next) {
+    mode = next === 'signup' ? 'signup' : 'login';
+
+    var title = doc.getElementById('form-title');
+    var submit = doc.getElementById('submit-btn');
+    var nameField = doc.getElementById('field-name');
+    var swapText = doc.getElementById('swap-text');
+    var swapLink = doc.getElementById('swap-link');
+    var tabs = doc.querySelectorAll('.modes__tab');
+
+    var signup = mode === 'signup';
+
+    if (nameField) nameField.hidden = !signup;
+    if (submit) submit.textContent = signup ? 'Create account' : 'Log in';
+
+    if (swapText) swapText.textContent = signup ? 'Already a member?' : 'New here?';
+    if (swapLink) swapLink.textContent = signup ? 'Log in instead' : 'Create an account';
+
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].setAttribute('aria-selected',
+        tabs[i].getAttribute('data-mode') === mode ? 'true' : 'false');
+    }
+
+    if (title) {
+      title.setAttribute('data-px', signup ? 'CREATE|ACCOUNT' : 'MEMBER LOG IN');
+      var sr = title.querySelector('.sr-only');
+      if (sr) sr.textContent = signup ? 'Create account' : 'Member log in';
+      if (global.PixFont) global.PixFont.render(title);
+    }
+  }
+
+  function initModes() {
+    var tabs = doc.querySelectorAll('.modes__tab');
+
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].addEventListener('click', function () {
+        setMode(this.getAttribute('data-mode'));
+      });
+    }
+
+    var swap = doc.getElementById('swap-link');
+    if (swap) {
+      swap.addEventListener('click', function () {
+        setMode(mode === 'signup' ? 'login' : 'signup');
+      });
+    }
+
+    setMode('login');
+  }
+
   function initLogin() {
     var form = doc.getElementById('login-form');
     if (!form) return;
 
+    initModes();
     tellTheTruthAboutTheForm();
 
     /* The button ships disabled in the HTML. Nothing on this form can work
@@ -419,7 +493,10 @@
        * goes to a server, is hashed there, and never comes back. Sign in
        * first; a brand new address is a sign-up rather than a failure. */
       if (global.CircuitBackend && global.CircuitBackend.configured()) {
-        return signInForReal(email.value, pass.value, submit, summary, list);
+        var nameBox = doc.getElementById('fullname');
+        return doTheRealThing(email.value, pass.value,
+                              nameBox ? nameBox.value.trim() : '',
+                              submit, summary, list);
       }
 
       /* If the browser refuses storage - private mode, or blocked cookies -

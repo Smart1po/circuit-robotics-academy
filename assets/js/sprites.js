@@ -1702,72 +1702,108 @@ var WING_SHUT_FRAMES = [
 
 
   /* --- GUARD ---------------------------------------------------------------
-   * The one on the door. Peaked cap, a badge on the chest, and every so often
-   * a salute. He stands on the sign-in page because that is the only door on
-   * the site, and a door with nobody on it is just a gap in a wall.
-   * 14 x 18, three frames.
+   * The one on the door. Peaked cap, badge on the chest, and a walk cycle: he
+   * paces the width of the sign-in panel and turns at each end.
+   *
+   * Two states. Calm, with cyan eyes and his arms down. And halt, where the
+   * eyes go red and a hand comes up — used when he has something to warn you
+   * about, which on this page is always the same thing.
+   * 18 x 21.
    * --------------------------------------------------------------------- */
   var GUARD_A = [
-    '.....oooooo...',
-    '....obbbbbbo..',
-    '...obbbbbbbbo.',
-    '...oooooooooo.',
-    '....oaaaaaao..',
-    '....obccbbo...',
-    '....obbbbbo...',
-    '.....oooooo...',
-    '...oooooooooo.',
-    '..obbbbggbbbo.',
-    '..obbbaggabbo.',
-    '..obbbbggbbbo.',
-    '..obbbbbbbbbo.',
-    '...oooooooooo.',
-    '...obbo..obbo.',
-    '...obbo..obbo.',
-    '...oooo..oooo.',
-    '..............'
+    '......oooooo......',
+    '....oobbbbbboo....',
+    '...obbbbbbbbbbo...',
+    '...oaaaaaaaaaao...',
+    '...oooooooooooo...',
+    '....obbbbbbbbo....',
+    '....obccbbccbo....',
+    '....obbbbbbbbo....',
+    '....obbmmmmbbo....',
+    '.....oooooooo.....',
+    '...oooooooooooo...',
+    '..obbbbggbbbbbbo..',
+    '..obbbaggabbbbbo..',
+    '..obbbbggbbbbbbo..',
+    '..obbbbbbbbbbbbo..',
+    '...oooooooooooo...',
+    '....obbo..obbo....',
+    '....obbo..obbo....',
+    '....obbo..obbo....',
+    '....oooo..oooo....',
+    '..................'
   ];
 
   var GUARD_B = [
-    '.....oooooo...',
-    '....obbbbbbo..',
-    '...obbbbbbbbo.',
-    '...oooooooooo.',
-    '....oaaaaaao..',
-    '....oboobbo...',
-    '....obbbbbo...',
-    '.....oooooo...',
-    '...oooooooooo.',
-    '..obbbbggbbbo.',
-    '..obbbaggabbo.',
-    '..obbbbggbbbo.',
-    '..obbbbbbbbbo.',
-    '...oooooooooo.',
-    '...obbo..obbo.',
-    '...obbo..obbo.',
-    '...oooo..oooo.',
-    '..............'
+    '......oooooo......',
+    '....oobbbbbboo....',
+    '...obbbbbbbbbbo...',
+    '...oaaaaaaaaaao...',
+    '...oooooooooooo...',
+    '....obbbbbbbbo....',
+    '....obccbbccbo....',
+    '....obbbbbbbbo....',
+    '....obbmmmmbbo....',
+    '.....oooooooo.....',
+    '...oooooooooooo...',
+    '..obbbbggbbbbbbo..',
+    '..obbbaggabbbbbo..',
+    '..obbbbggbbbbbbo..',
+    '..obbbbbbbbbbbbo..',
+    '...oooooooooooo...',
+    '...obbo....obbo...',
+    '...obbo....obbo...',
+    '..obbo......obbo..',
+    '..oooo......oooo..',
+    '..................'
   ];
 
-  var GUARD_C = [
-    '.....oooooo.o.',
-    '....obbbbbboo.',
-    '...obbbbbbbbo.',
-    '...ooooooooooo',
-    '....oaaaaaaobo',
-    '....obccbboobo',
-    '....obbbbbo.o.',
-    '.....oooooo...',
-    '...oooooooooo.',
-    '..obbbbggbbbo.',
-    '..obbbaggabbo.',
-    '..obbbbggbbbo.',
-    '..obbbbbbbbbo.',
-    '...oooooooooo.',
-    '...obbo..obbo.',
-    '...obbo..obbo.',
-    '...oooo..oooo.',
-    '..............'
+  var HALT_A = [
+    '......oooooo...oo.',
+    '....oobbbbbboo.obo',
+    '...obbbbbbbbbbo.oo',
+    '...oaaaaaaaaaaoobo',
+    '...ooooooooooooobo',
+    '....obbbbbbbbo.obo',
+    '....obhhbbhhbo....',
+    '....obbbbbbbbo....',
+    '....obbmmmmbbo....',
+    '.....oooooooo.....',
+    '..ooooooooooooobo.',
+    '..obbbbggbbbbbbo..',
+    '..obbbaggabbbbbo..',
+    '..obbbbggbbbbbbo..',
+    '..obbbbbbbbbbbbo..',
+    '...oooooooooooo...',
+    '....obbo..obbo....',
+    '....obbo..obbo....',
+    '....obbo..obbo....',
+    '....oooo..oooo....',
+    '..................'
+  ];
+
+  var HALT_B = [
+    '......oooooo...oo.',
+    '....oobbbbbboo.obo',
+    '...obbbbbbbbbbo.oo',
+    '...oaaaaaaaaaaoobo',
+    '...ooooooooooooobo',
+    '....obbbbbbbbo.obo',
+    '....obhhbbhhbo....',
+    '....obbbbbbbbo....',
+    '....obbmmmmbbo....',
+    '.....oooooooo.....',
+    '..ooooooooooooobo.',
+    '..obbbbggbbbbbbo..',
+    '..obbbaggabbbbbo..',
+    '..obbbbggbbbbbbo..',
+    '..obbbbbbbbbbbbo..',
+    '...oooooooooooo...',
+    '...obbo....obbo...',
+    '...obbo....obbo...',
+    '..obbo......obbo..',
+    '..oooo......oooo..',
+    '..................'
   ];
 
   /* --- TITAN ---------------------------------------------------------------
@@ -1855,7 +1891,8 @@ var WING_SHUT_FRAMES = [
     'wing-open': { frames: WING_OPEN_FRAMES, palette: PLUME, fps: 10, scale: 2 },
     'wing-shut': { frames: WING_SHUT_FRAMES, palette: PLUME, fps: 10, scale: 2 },
 
-    guard: { frames: [GUARD_A, GUARD_A, GUARD_B, GUARD_A, GUARD_C, GUARD_C], palette: P, fps: 2, scale: 3 },
+    guard: { frames: [GUARD_A, GUARD_B], palette: P, fps: 3, scale: 5 },
+    'guard-halt': { frames: [HALT_A, HALT_B], palette: P, fps: 3, scale: 5 },
     titan: { frames: [TITAN_A, TITAN_A, TITAN_A, TITAN_B], palette: P, fps: 2, scale: 3 },
 
     bird:  { frames: [BIRD_UP, BIRD_MID, BIRD_DOWN, BIRD_MID], palette: PLUME, fps: 9, scale: 5 }

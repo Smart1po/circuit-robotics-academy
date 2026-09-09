@@ -43,14 +43,20 @@
   <div class="cabinet">
 
     <div class="cabinet__door">
-      <span class="sprite" data-sprite="guard" data-scale="3"></span>
-      <span class="sprite" data-sprite="coin" data-scale="4"></span>
+      <p class="guard__say" id="guard-say" aria-live="polite"></p>
+      <div class="guard__beat">
+        <span class="sprite" id="guard" data-sprite="guard" data-scale="5"></span>
+      </div>
     </div>
-    <p class="t-cap" style="text-align:center;margin-bottom:16px">The door is watched. Members only.</p>
 
     <div class="frame frame--cyan">
 
-      <h1 class="px px--head" data-px="MEMBER LOG IN" data-px-align="center" data-px-max="6">Member log in</h1>
+      <h1 class="px px--head" id="form-title" data-px="MEMBER LOG IN" data-px-align="center" data-px-max="6">Member log in</h1>
+
+      <div class="modes" role="tablist" aria-label="Log in or create an account">
+        <button class="modes__tab" type="button" role="tab" data-mode="login" aria-selected="true">Log in</button>
+        <button class="modes__tab" type="button" role="tab" data-mode="signup" aria-selected="false">Create account</button>
+      </div>
 
       <p class="t-body" style="margin-top:20px">
         Members log in here for the term timetable, the kit library and the
@@ -66,6 +72,14 @@
            put an email and a password into the URL bar. The site's CSP blocks
            form submission outright as a second line of defence. -->
       <form id="login-form" method="post" novalidate style="margin-top:24px">
+
+        <div class="field" id="field-name" hidden>
+          <label for="fullname">Your name</label>
+          <span class="field__hint" id="name-hint">What the members area should call you.</span>
+          <input type="text" id="fullname" name="fullname" autocomplete="name"
+                 aria-describedby="name-hint" placeholder="Sara Al-Fahad">
+          <span class="field__err" id="fullname-err">Tell us what to call you.</span>
+        </div>
 
         <div class="field">
           <label for="email">Email</label>
@@ -89,7 +103,7 @@
         </p>
 
         <p style="margin-top:24px">
-          <button class="btn btn--block" type="submit" disabled aria-disabled="true">Sign in</button>
+          <button class="btn btn--block" type="submit" id="submit-btn" disabled aria-disabled="true">Log in</button>
         </p>
 
         <noscript>
@@ -98,6 +112,11 @@
             The public pages all work without it.
           </p>
         </noscript>
+
+        <p class="modes__swap">
+          <span id="swap-text">New here?</span>
+          <button type="button" class="modes__swaplink" id="swap-link">Create an account</button>
+        </p>
 
         <p class="notice" style="margin-top:20px">
           <b>Please do not use a real password here.</b> This sign-in is a
@@ -160,7 +179,6 @@
       <span class="t-cap">&copy; 2026 CIRCUIT &middot; Kuwait City</span>
       <button class="chip" type="button" data-motion-toggle aria-pressed="false">Motion: on</button>
       <button class="chip" type="button" data-assistant-show hidden>Show assistant</button>
-      <span class="t-cap foot__note">A student portfolio project.</span>
     </div>
   </div>
 </footer>
@@ -174,6 +192,7 @@
 <script src="assets/js/scene.js"></script>
 <script src="assets/js/assistant.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/guard.js"></script>
 <script src="assets/js/nav.js"></script>
 </body>
 </html>

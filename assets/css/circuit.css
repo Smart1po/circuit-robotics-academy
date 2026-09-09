@@ -2243,3 +2243,216 @@ html[data-motion="off"] .guard__beat { animation: none; }
   min-height: 40px;
 }
 .modes__swaplink:hover { color: var(--text); }
+
+/* ============================================================================
+   PICK A UNIT
+   Four tiles, one answer. The other three units are still on the page — they
+   are simply not shouting while you read the one you asked for.
+   ========================================================================= */
+
+.picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--px);
+  margin-top: var(--s5);
+  padding: var(--px);
+  background: var(--edge-dim);
+}
+
+@media (min-width: 720px) { .picker { grid-template-columns: repeat(4, 1fr); } }
+
+.picker__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s5) var(--s3);
+  min-height: 132px;
+  border: 0;
+  background: var(--panel);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background-color 160ms steps(2), color 160ms steps(2);
+}
+
+.picker__tile b {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+}
+
+.picker__tile span:last-child {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.picker__tile:hover { background: var(--panel-hi); color: var(--text); }
+
+.picker__tile[aria-selected="true"] {
+  background: var(--panel-hi);
+  color: var(--cyan);
+  box-shadow: inset 0 calc(var(--px) * -1) 0 var(--cyan);
+}
+
+.picker__tile[aria-selected="true"] b { color: var(--cyan); }
+
+.picker__panel { margin-top: var(--s5); min-height: 150px; }
+
+/* ============================================================================
+   TWELVE WEEKS
+   The shape of a term, before a word of it is read: four stages, four colours,
+   twelve boxes. Hovering browses; clicking commits.
+   ========================================================================= */
+
+.weeks {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--px);
+  margin-top: var(--s5);
+  padding: var(--px);
+  background: var(--edge-dim);
+}
+
+@media (min-width: 720px) { .weeks { grid-template-columns: repeat(12, 1fr); } }
+
+.weeks__cell {
+  min-height: 56px;
+  border: 0;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--void);
+  transition: transform 120ms steps(2), filter 120ms steps(2);
+}
+
+.weeks__cell--build   { background: var(--cyan); }
+.weeks__cell--control { background: var(--lime); }
+.weeks__cell--flight  { background: var(--amber); }
+.weeks__cell--run     { background: var(--magenta); }
+
+.weeks__cell:hover { filter: brightness(1.2); }
+
+.weeks__cell[aria-selected="true"] {
+  transform: translateY(calc(var(--px) * -1));
+  box-shadow: 0 var(--px) 0 var(--text);
+}
+
+.weeks__panel { margin-top: var(--s5); min-height: 110px; }
+
+/* ============================================================================
+   THE SCOREBOARD
+   Six numbers do the work six paragraphs used to.
+   ========================================================================= */
+
+.score {
+  margin-top: var(--s5);
+  background: var(--edge-dim);
+  padding: var(--px);
+  display: grid;
+  gap: var(--px);
+}
+
+.score__row {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s3) var(--s4);
+  background: var(--panel);
+  font-size: 15px;
+}
+
+.score__n {
+  flex: 0 0 auto;
+  min-width: 62px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--magenta);
+  text-align: right;
+}
+
+.score__row em { color: var(--text-dim); font-style: normal; font-size: 13px; }
+.score__row--bonus .score__n { color: var(--lime); }
+
+.score__row--total {
+  background: var(--panel-hi);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.score__row--total .score__n { color: var(--text); }
+
+/* The mat PIP runs along, under the scoreboard. */
+.mat {
+  position: relative;
+  height: 46px;
+  margin-top: var(--s4);
+  background:
+    repeating-linear-gradient(to right,
+      var(--magenta) 0 var(--px),
+      transparent var(--px) calc(var(--px) * 5))
+    center / 100% 2px no-repeat;
+}
+
+.mat__pip {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  animation: mat-run 11s steps(24) infinite alternate;
+}
+
+@keyframes mat-run {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(100vw - 120px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) .mat__pip { animation: none; }
+}
+html[data-motion="off"] .mat__pip { animation: none; }
+
+/* ============================================================================
+   QUESTIONS
+   Closed until asked. Native <details>, so this works with no script at all.
+   ========================================================================= */
+
+.qa { margin-top: var(--s5); display: grid; gap: var(--px); background: var(--edge-dim); padding: var(--px); }
+
+.qa__item { background: var(--panel); }
+
+.qa__item summary {
+  padding: var(--s4);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-height: 56px;
+}
+
+.qa__item summary::-webkit-details-marker { display: none; }
+
+.qa__item summary::before {
+  content: "+";
+  flex: 0 0 auto;
+  width: 22px;
+  color: var(--cyan);
+  font-size: 20px;
+}
+
+.qa__item[open] summary::before { content: "−"; }
+.qa__item summary:hover { background: var(--panel-hi); }
+
+.qa__item p {
+  padding: 0 var(--s4) var(--s4) calc(var(--s4) + 22px + var(--s3));
+  color: var(--text-dim);
+  max-width: var(--measure);
+}
+
+/* A small companion on each band card. */
+.band { position: relative; }
+.band__pet { position: absolute; top: var(--s4); right: var(--s4); pointer-events: none; }

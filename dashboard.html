@@ -8,7 +8,7 @@
      serves no headers of its own — so on the live host this meta tag IS the
      Content Security Policy. It must come before anything else loads.
      frame-ancestors cannot be set from a meta tag; it stays in vercel.json. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://*.supabase.co; form-action 'none'; base-uri 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard — CIRCUIT</title>
 <meta name="color-scheme" content="dark light">
@@ -117,6 +117,17 @@
     </section>
 
     <!-- PANEL 6 -->
+    <section class="frame" id="shared-panel" data-reveal hidden>
+      <h2 class="panel__h">Everyone here</h2>
+      <p class="t-cap" id="shared-count">Loading…</p>
+      <ul class="stack" id="shared-list" style="margin-top:16px"></ul>
+      <p class="t-body" style="margin-top:16px">
+        This list is the same on every device. Somebody signing up right now
+        appears here, and is still here next week.
+      </p>
+    </section>
+
+
     <section class="frame frame--amber card" data-reveal>
       <span class="card__sprite sprite" data-sprite="claw" data-scale="2"></span>
       <h2 class="panel__h" style="color:var(--amber)">From your coach</h2>
@@ -187,6 +198,8 @@
   </div>
 </footer>
 
+<script src="assets/js/config.js"></script>
+<script src="assets/js/backend.js"></script>
 <script src="assets/js/pixfont.js"></script>
 <script src="assets/js/pixel.js"></script>
 <script src="assets/js/sprites.js"></script>

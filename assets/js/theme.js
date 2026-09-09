@@ -201,7 +201,26 @@
   var prefersLight = global.matchMedia &&
     global.matchMedia('(prefers-color-scheme: light)').matches;
 
+  /* Suppress every transition for the first paint. Without this the page
+   * cross-fades from the browser's default colours on load, which looks like
+   * a bug rather than a dimmer. */
+  doc.documentElement.classList.add('theme-booting');
+
   apply(saved === 'light' || saved === 'dark' ? saved : (prefersLight ? 'light' : 'dark'));
+
+  /* Arm the fade once the first paint is done. requestAnimationFrame is the
+   * right signal, but it never fires in a background tab — so a timer runs
+   * alongside it. Whichever arrives first wins; the class only needs
+   * removing once, and leaving it on would disable the fade permanently. */
+  function armFade() {
+    doc.documentElement.classList.remove('theme-booting');
+  }
+
+  global.requestAnimationFrame(function () {
+    global.requestAnimationFrame(armFade);
+  });
+
+  global.setTimeout(armFade, 120);
 
   if (doc.readyState === 'loading') {
     doc.addEventListener('DOMContentLoaded', build);

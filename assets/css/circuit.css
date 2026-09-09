@@ -1846,7 +1846,15 @@ html[data-motion="off"] .px--mag { animation: none; }
 html.reveal-armed [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 420ms ease-out, transform 420ms cubic-bezier(.2,.7,.3,1);
+  /* The colour transitions are repeated here on purpose: this rule sets the
+     whole `transition` shorthand, so without them a revealed card would snap
+     between light and dark while everything around it faded. */
+  transition:
+    opacity 420ms ease-out,
+    transform 420ms cubic-bezier(.2,.7,.3,1),
+    background-color 520ms ease,
+    color 520ms ease,
+    box-shadow 520ms ease;
 }
 
 html.reveal-armed [data-reveal].is-in {
@@ -2049,4 +2057,50 @@ html[data-motion="off"] .veil { display: none; }
 @media (max-width: 560px) {
   .veil__word { font-size: 15px; }
   .veil__cast { gap: var(--s4); }
+}
+
+/* ============================================================================
+   THE LIGHTS COME UP, THEY DO NOT SNAP ON
+   Every colour on the site is a custom property, so the theme swap used to be
+   instant — one frame indigo, the next frame paper. These transitions put the
+   change on a dimmer instead. Only colour properties are listed: transitioning
+   "all" would drag layout and transforms into it and make the whole page feel
+   like treacle.
+   ========================================================================= */
+
+body,
+.hud, .foot, .frame, .cabinet, .strip__cell, .tablewrap,
+th, td, thead th, tbody tr td,
+.chip, .btn, .field input, .notice, .safety, .flagged, .forget,
+.asst__panel, .asst__flag, .asst__head, .asst__msg, .asst__chip, .asst__form input,
+.totop, .scene__grid, .glass, .meter__cell, .party, .rail {
+  transition:
+    background-color 520ms ease,
+    color 520ms ease,
+    box-shadow 520ms ease,
+    border-color 520ms ease,
+    opacity 520ms ease;
+}
+
+/* The bitmap type is an SVG filled with currentColor, so it fades with it. */
+.px-svg { transition: fill 520ms ease; }
+
+/* The cord's bulb warms up and cools down rather than flicking. */
+.cord__bulb { transition: background-color 520ms ease, box-shadow 620ms ease; }
+
+/* One exception: while the light is actually being swallowed, the sheet has
+   to move at its own speed. Transitions would fight the animation. */
+.flash { transition: none; }
+
+/* And on the very first paint there is nothing to fade FROM, so the page
+   would cross-fade from the browser default on load. This class is removed a
+   frame after boot. */
+html.theme-booting *,
+html.theme-booting *::before,
+html.theme-booting *::after { transition: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) body,
+  html:not([data-motion]) .hud,
+  html:not([data-motion]) .frame { transition: none; }
 }

@@ -155,6 +155,54 @@
     return want.indexOf('.html') > -1 ? want : want + '.html';
   }
 
+  /* The real thing. Try to sign in; if this address has never been seen
+   * before, create the account instead. Either way the password is handled
+   * by the server and this site never holds it. */
+  function signInForReal(email, password, submit, summary, list) {
+    var B = global.CircuitBackend;
+
+    function fail(message) {
+      list.innerHTML = '';
+      var li = doc.createElement('li');
+      li.textContent = message;
+      list.appendChild(li);
+      summary.querySelector('h2').textContent = 'Could not sign you in';
+      summary.setAttribute('data-open', 'true');
+      summary.focus();
+
+      if (submit) { submit.disabled = false; submit.textContent = 'Sign in'; }
+    }
+
+    if (submit) { submit.disabled = true; submit.textContent = 'Signing in…'; }
+
+    B.signIn(email, password)['catch'](function (err) {
+      /* "Invalid login credentials" covers both a wrong password and an
+       * address the server has never seen. Try creating it; if THAT fails
+       * because it already exists, the password really was wrong. */
+      if (err.status !== 400 && err.status !== 401) throw err;
+
+      return B.signUp(email, password).then(function (data) {
+        if (!data || !data.access_token) {
+          throw new Error('Account created. Check your email to confirm it, then sign in.');
+        }
+        return data;
+      });
+    }).then(function () {
+      return B.me();
+    }).then(function (user) {
+      var name = (user && user.user_metadata && user.user_metadata.display_name) ||
+                 global.CircuitSession.nameFromEmail(email);
+
+      global.CircuitSession.start(email, true);
+
+      /* Put them on the shared list, so everybody else sees them too. */
+      return B.joinMembers(name)['catch'](function () {})
+        .then(function () { global.location.href = nextPage(); });
+    })['catch'](function (err) {
+      fail(err && err.message ? err.message : 'Something went wrong. Try again.');
+    });
+  }
+
   /* An escape hatch on the one page where a remembered address is visible.
    * A kept session outlives the browser, so there has to be a way to end it
    * from outside the members area — otherwise the only way out of somebody
@@ -191,9 +239,36 @@
     host.parentNode.insertBefore(wrap, host.nextSibling);
   }
 
+  /* The warning on the form is true only while there is nothing behind it.
+   * Once a server is hashing the password, saying "this is a preview, do not
+   * use a real password" would itself be the false statement. */
+  function tellTheTruthAboutTheForm() {
+    if (!global.CircuitBackend || !global.CircuitBackend.configured()) return;
+
+    var notice = doc.querySelector('.notice');
+    if (notice) {
+      notice.innerHTML = '';
+      var b = doc.createElement('b');
+      b.textContent = 'This is a real account now.';
+      notice.appendChild(b);
+      notice.appendChild(doc.createTextNode(
+        ' Your password is sent once, hashed on the server, and never stored ' +
+        'by this site in any form. A new address signs you up; one we have ' +
+        'seen before signs you in.'));
+    }
+
+    var hint = doc.getElementById('pw-hint');
+    if (hint) hint.textContent = 'At least six characters.';
+
+    var pw = doc.getElementById('password');
+    if (pw) pw.setAttribute('autocomplete', 'current-password');
+  }
+
   function initLogin() {
     var form = doc.getElementById('login-form');
     if (!form) return;
+
+    tellTheTruthAboutTheForm();
 
     /* The button ships disabled in the HTML. Nothing on this form can work
      * without JavaScript, and a button that looks alive but does nothing is
@@ -292,6 +367,13 @@
 
       summary.setAttribute('data-open', 'false');
 
+      /* With a back end configured, this stops being a mockup: the password
+       * goes to a server, is hashed there, and never comes back. Sign in
+       * first; a brand new address is a sign-up rather than a failure. */
+      if (global.CircuitBackend && global.CircuitBackend.configured()) {
+        return signInForReal(email.value, pass.value, submit, summary, list);
+      }
+
       /* If the browser refuses storage - private mode, or blocked cookies -
        * the session cannot be written, the gate on the next page bounces the
        * visitor straight back here, and the loop has no visible cause. Say it
@@ -352,9 +434,58 @@
       out.addEventListener('click', function (e) {
         e.preventDefault();
         global.CircuitSession.end();
+
+        /* End it on the server too, or the token outlives the sign-out and
+         * the next visit walks straight back in. */
+        if (global.CircuitBackend && global.CircuitBackend.configured()) {
+          global.CircuitBackend.signOut()['catch'](function () {})
+            .then(function () { global.location.href = 'index.html'; });
+          return;
+        }
+
         global.location.href = 'index.html';
       });
     }
+  }
+
+  /* The shared list. This panel is the whole difference between a front end
+   * and a product, so it stays hidden rather than showing an empty box when
+   * there is no back end to fill it from. */
+  function initShared() {
+    var panel = doc.getElementById('shared-panel');
+    if (!panel) return;
+    if (!global.CircuitBackend || !global.CircuitBackend.configured()) return;
+
+    panel.hidden = false;
+
+    var list = doc.getElementById('shared-list');
+    var count = doc.getElementById('shared-count');
+
+    global.CircuitBackend.listMembers(20).then(function (rows) {
+      rows = rows || [];
+      count.textContent = rows.length === 1 ? '1 member' : rows.length + ' members';
+
+      list.innerHTML = '';
+
+      for (var i = 0; i < rows.length; i++) {
+        var li = doc.createElement('li');
+
+        var who = doc.createElement('b');
+        who.className = 't-mark';
+        who.textContent = rows[i].display_name;
+
+        li.appendChild(who);
+        li.appendChild(doc.createTextNode(' · ' + (rows[i].band || 'SPARK')));
+        list.appendChild(li);
+      }
+
+      if (!rows.length) {
+        count.textContent = 'Nobody yet. You will be the first.';
+      }
+    })['catch'](function (err) {
+      count.textContent = 'Could not reach the members list: ' +
+        (err && err.message ? err.message : 'unknown error');
+    });
   }
 
   /* Twelve cells, seven lit, the seventh flagged as current. Both the cells
@@ -435,6 +566,7 @@
     initMotionToggle();
     initReveal();
     initGuarded();
+    initShared();
     initMeter();
     initLogin();
 
